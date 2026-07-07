@@ -154,7 +154,12 @@
     <ClCompile Include="GeometryCore.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Algorithms\Intersection.h" />
     <ClInclude Include="Primitives\Header.h" />
+    <ClInclude Include="Primitives\Point2.h" />
+    <ClInclude Include="Primitives\Point3.h" />
+    <ClInclude Include="Primitives\Segment2.h" />
+    <ClInclude Include="Primitives\Segment3.h" />
     <ClInclude Include="Primitives\Vector2.h" />
     <ClInclude Include="Primitives\Vector3.h" />
   </ItemGroup>

@@ -97,6 +97,10 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Primitives\Point2_test.cpp" />
+    <ClCompile Include="Primitives\Point3_test.cpp" />
+    <ClCompile Include="Primitives\Segment2_test.cpp" />
+    <ClCompile Include="Primitives\Segment3_test.cpp" />
     <ClCompile Include="Primitives\Vector2_test.cpp" />
     <ClCompile Include="Primitives\Vector3_test.cpp" />
     <ClCompile Include="test.cpp" />
