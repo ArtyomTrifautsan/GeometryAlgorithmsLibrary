@@ -26,15 +26,17 @@ TEST(Vector2Test, LengthCalculations) {
 
 TEST(Vector2Test, NormalizeSuccess) {
     Vector2<double> v(3.0, 0.0);
-    v.Normalize();
+    EXPECT_TRUE(v.Normalize());
     EXPECT_DOUBLE_EQ(v.x, 1.0);
     EXPECT_DOUBLE_EQ(v.y, 0.0);
     EXPECT_DOUBLE_EQ(v.Len(), 1.0);
 }
 
-TEST(Vector2Test, NormalizeThrowsOnZeroLength) {
+TEST(Vector2Test, NormalizeZeroLength) {
     Vector2<double> v(0.0, 0.0);
-    EXPECT_THROW(v.Normalize(), std::runtime_error);
+    EXPECT_FALSE(v.Normalize());
+    EXPECT_DOUBLE_EQ(v.x, 0.0);
+    EXPECT_DOUBLE_EQ(v.y, 0.0);
 }
 
 TEST(Vector2Test, UnaryMinus) {

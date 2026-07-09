@@ -25,17 +25,19 @@ TEST(Vector3Test, LengthCalculations) {
 
 TEST(Vector3Test, NormalizeSuccess) {
     Vector3<double> v(0.0, 3.0, 4.0);
-    v.Normalize();
-
+    EXPECT_TRUE(v.Normalize());
     EXPECT_NEAR(v.x, 0.0, 1e-9);
     EXPECT_NEAR(v.y, 0.6, 1e-9);
     EXPECT_NEAR(v.z, 0.8, 1e-9);
     EXPECT_NEAR(v.Len(), 1.0, 1e-9);
 }
 
-TEST(Vector3Test, NormalizeThrowsOnZeroLength) {
+TEST(Vector3Test, NormalizeZeroLength) {
     Vector3<double> v(0.0, 0.0, 0.0);
-    EXPECT_THROW(v.Normalize(), std::runtime_error);
+    EXPECT_FALSE(v.Normalize());
+    EXPECT_DOUBLE_EQ(v.x, 0.0);
+    EXPECT_DOUBLE_EQ(v.y, 0.0);
+    EXPECT_DOUBLE_EQ(v.z, 0.0);
 }
 
 TEST(Vector3Test, UnaryMinus) {
