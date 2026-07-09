@@ -45,3 +45,11 @@ TEST(Segment2Test, MidpointCalculation) {
     EXPECT_DOUBLE_EQ(mid.x, 1.0);
     EXPECT_DOUBLE_EQ(mid.y, 2.0);
 }
+
+TEST(Segment2Test, PointAtCalculation) {
+    Segment2<double> seg(Point2<double>(1.0, 2.0), Point2<double>(5.0, 10.0));
+    auto point_at_ = seg.PointAt(0.25);
+
+    EXPECT_DOUBLE_EQ(point_at_.x, 2.0);
+    EXPECT_DOUBLE_EQ(point_at_.y, 4.0);
+}

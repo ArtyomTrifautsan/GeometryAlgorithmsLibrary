@@ -1,7 +1,10 @@
 #include "gtest/gtest.h"
+
 #include <GeometryCore/Primitives/Vector2.h>
+#include <GeometryCore/Math/Constants.h>
 
 using namespace Geometry;
+
 
 TEST(Vector2Test, DefaultConstructor) {
     Vector2<double> v;
@@ -110,4 +113,32 @@ TEST(Vector2Test, CrossProduct)
     Vector2<double> v2(2.0, 3.0);
     double cross_result = Cross(v1, v2);
     EXPECT_DOUBLE_EQ(cross_result, -1.0);
+}
+
+TEST(Vector2Test, AreEqual_CompileTime)
+{
+    constexpr Vector2<double> v1{ 0.0, 0.0 };
+    constexpr Vector2<double> v2{ 0.0, 0.0 };
+    static_assert(AreEqual(v1, v2), "Compile-time AreEqual failed for Vector2");
+}
+
+TEST(Vector2Test, AreEqual_ExactMatch)
+{
+    Vector2<double> v1{ -100.25, 4.5 };
+    Vector2<double> v2{ -100.25, 4.5 };
+    EXPECT_TRUE(AreEqual(v1, v2));
+}
+
+TEST(Vector2Test, AreEqual_ZeroVectorsWithinEpsilon)
+{
+    Vector2<double> v1{ 0.0, 0.0 };
+    Vector2<double> v2{ EPSILON<double> *0.1, -EPSILON<double> *0.1 };
+    EXPECT_TRUE(AreEqual(v1, v2));
+}
+
+TEST(Vector2Test, AreEqual_OutsideEpsilon)
+{
+    Vector2<double> v1{ -100.25, 4.5 };
+    Vector2<double> v2{ -100.25, 4.5 + (EPSILON<double> *1.5) };
+    EXPECT_FALSE(AreEqual(v1, v2));
 }

@@ -5,6 +5,10 @@
 #include <exception>
 #include <stdexcept>
 
+#include <GeometryCore/Math/Utils.h>
+#include <GeometryCore/Math/Constants.h>
+
+
 namespace Geometry
 {
 	// T - float/double
@@ -15,8 +19,8 @@ namespace Geometry
 		T y = 0;
 		T z = 0;
 
-		Vector3() = default;
-		Vector3(T x_, T y_, T z_) : x{ x_ }, y{ y_ }, z{ z_ } {}
+		constexpr Vector3() = default;
+		constexpr Vector3(T x_, T y_, T z_) : x{ x_ }, y{ y_ }, z{ z_ } {}
 
 		[[nodiscard]] constexpr T SqrLen() const noexcept { return x * x + y * y + z * z; }
 
@@ -26,7 +30,7 @@ namespace Geometry
 		{
 			T length = Len();
 
-			if (length < std::numeric_limits<T>::epsilon())
+			if (length < EPSILON<T>)
 			{
 				throw std::runtime_error("Attempt to normalize a vector with zero length");
 			}
@@ -106,5 +110,11 @@ namespace Geometry
 			lhs.z * rhs.x - lhs.x * rhs.z,
 			lhs.x * rhs.y - lhs.y * rhs.x
 		};
+	}
+
+	template <typename T>
+	[[nodiscard]] constexpr bool AreEqual(const Vector3<T>& lhs, const Vector3<T>& rhs) noexcept
+	{
+		return AreEqual(lhs.x, rhs.x) && AreEqual(lhs.y, rhs.y) && AreEqual(lhs.z, rhs.z);
 	}
 }

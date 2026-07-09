@@ -4,7 +4,9 @@
 #include <limits>
 #include <exception>
 #include <stdexcept>
-//#include <algorithm>
+
+#include <GeometryCore/Math/Utils.h>
+#include <GeometryCore/Math/Constants.h>
 
 
 namespace Geometry
@@ -16,8 +18,8 @@ namespace Geometry
 		T x = 0;
 		T y = 0;
 
-		Vector2() = default;
-		Vector2(T x_, T y_) : x{x_}, y{y_} {}
+		constexpr Vector2() = default;
+		constexpr Vector2(T x_, T y_) : x{x_}, y{y_} {}
 
 		[[nodiscard]] constexpr T SqrLen() const noexcept { return x * x + y * y; }
 		
@@ -26,9 +28,8 @@ namespace Geometry
 		void Normalize()
 		{
 			T length = Len();
-			T Epsilon = 1e-9;
 
-			if (length < Epsilon)
+			if (length < EPSILON<T>)
 			{
 				throw std::runtime_error("Attempt to normalize a vector with zero length");
 			}
@@ -94,5 +95,11 @@ namespace Geometry
 	template <typename T>
 	[[nodiscard]] constexpr T Cross(const Vector2<T>& lhs, const Vector2<T>& rhs) noexcept {
 		return lhs.x * rhs.y - lhs.y * rhs.x;
+	}
+
+	template <typename T>
+	[[nodiscard]] constexpr bool AreEqual(const Vector2<T>& lhs, const Vector2<T>& rhs) noexcept
+	{
+		return AreEqual(lhs.x, rhs.x) && AreEqual(lhs.y, rhs.y);
 	}
 }

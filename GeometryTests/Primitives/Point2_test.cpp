@@ -1,6 +1,8 @@
 #include "gtest/gtest.h"
+
 #include <GeometryCore/Primitives/Point2.h>
 #include <GeometryCore/Primitives/Vector2.h>
+#include <GeometryCore/Math/Constants.h>
 
 using namespace Geometry;
 
@@ -71,4 +73,39 @@ TEST(Point2Test, OperatorMinusAssign) {
     EXPECT_DOUBLE_EQ(p.x, 3.5);
     EXPECT_DOUBLE_EQ(p.y, 2.5);
     EXPECT_EQ(&ref, &p);
+}
+
+TEST(Point2Test, AreEqual_CompileTime)
+{
+    constexpr Point2<double> p1{ 1.0, 2.0 };
+    constexpr Point2<double> p2{ 1.0, 2.0 };
+    static_assert(AreEqual(p1, p2), "Compile-time AreEqual failed for Point2");
+}
+
+TEST(Point2Test, AreEqual_ExactMatch)
+{
+    Point2<double> p1{ 10.0, -5.5 };
+    Point2<double> p2{ 10.0, -5.5 };
+    EXPECT_TRUE(AreEqual(p1, p2));
+}
+
+TEST(Point2Test, AreEqual_WithinEpsilon)
+{
+    Point2<double> p1{ 10.0, -5.5 };
+    Point2<double> p2{ 10.0 + (EPSILON<double> *0.5), -5.5 };
+    EXPECT_TRUE(AreEqual(p1, p2));
+}
+
+TEST(Point2Test, AreEqual_OutsideEpsilon)
+{
+    Point2<double> p1{ 10.0, -5.5 };
+    Point2<double> p2{ 10.0 + (EPSILON<double> *1.5), -5.5 };
+    EXPECT_FALSE(AreEqual(p1, p2));
+}
+
+TEST(Point2Test, AreEqual_OneCoordinateMismatch)
+{
+    Point2<double> p1{ 10.0, -5.5 };
+    Point2<double> p2{ 10.0, -5.5 + (EPSILON<double> *1.5) };
+    EXPECT_FALSE(AreEqual(p1, p2));
 }

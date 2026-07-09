@@ -1,5 +1,8 @@
 #pragma once
-#include "Vector3.h"
+
+#include <GeometryCore/Primitives/Vector3.h>
+#include <GeometryCore/Math/Utils.h>
+
 
 namespace Geometry
 {
@@ -10,8 +13,8 @@ namespace Geometry
         T y = 0;
         T z = 0;
 
-        Point3() = default;
-        Point3(T x_, T y_, T z_) : x{ x_ }, y{ y_ }, z{ z_ } {}
+        constexpr Point3() = default;
+        constexpr Point3(T x_, T y_, T z_) : x{ x_ }, y{ y_ }, z{ z_ } {}
 
         constexpr Point3& operator+=(const Vector3<T>& v)
         {
@@ -48,5 +51,11 @@ namespace Geometry
     {
         p -= v;
         return p;
+    }
+
+    template <typename T>
+    [[nodiscard]] constexpr bool AreEqual(const Point3<T>& lhs, const Point3<T>& rhs) noexcept
+    {
+        return AreEqual(lhs.x, rhs.x) && AreEqual(lhs.y, rhs.y) && AreEqual(lhs.z, rhs.z);
     }
 }

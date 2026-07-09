@@ -1,6 +1,7 @@
 #pragma once
 
-#include "Vector2.h"
+#include <GeometryCore/Primitives/Vector2.h>
+#include <GeometryCore/Math/Utils.h>
 
 
 namespace Geometry
@@ -11,9 +12,8 @@ namespace Geometry
 		T x = 0;
 		T y = 0;
 
-		Point2() = default;
-
-		Point2(T x_, T y_) noexcept : x{x_}, y{y_} {}
+		constexpr Point2() = default;
+		constexpr Point2(T x_, T y_) noexcept : x{x_}, y{y_} {}
 
 		constexpr Point2& operator+=(const Vector2<T>& v) noexcept
 		{
@@ -29,7 +29,7 @@ namespace Geometry
 			return *this;
 		}
 
-		[[nodiscard]] bool Equals(const Point2& other, T tolerance = T(1e-9)) const noexcept
+		[[nodiscard]] constexpr bool Equals(const Point2& other, T tolerance = T(1e-9)) const noexcept
 		{
 			return (*this - other).SqrLen() <= tolerance * tolerance;
 		}
@@ -53,5 +53,11 @@ namespace Geometry
 	{
 		p -= v;
 		return p;
+	}
+
+	template <typename T>
+	[[nodiscard]] constexpr bool AreEqual(const Point2<T>& lhs, const Point2<T>& rhs) noexcept
+	{
+		return AreEqual(lhs.x, rhs.x) && AreEqual(lhs.y, rhs.y);
 	}
 }

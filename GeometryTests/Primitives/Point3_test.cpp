@@ -1,6 +1,8 @@
 #include "gtest/gtest.h"
+
 #include <GeometryCore/Primitives/Point3.h>
 #include <GeometryCore/Primitives/Vector3.h>
+#include <GeometryCore/Math/Constants.h>
 
 using namespace Geometry;
 
@@ -76,4 +78,32 @@ TEST(Point3Test, OperatorMinusAssign) {
     EXPECT_DOUBLE_EQ(p.y, 7.5);
     EXPECT_DOUBLE_EQ(p.z, 6.5);
     EXPECT_EQ(&ref, &p);
+}
+
+TEST(Point3Test, AreEqual_CompileTime)
+{
+    constexpr Point3<float> p1{ 1.0f, 2.0f, 3.0f };
+    constexpr Point3<float> p2{ 1.0f, 2.0f, 3.0f };
+    static_assert(AreEqual(p1, p2), "Compile-time AreEqual failed for Point3");
+}
+
+TEST(Point3Test, AreEqual_ExactMatch)
+{
+    Point3<double> p1{ 1.0, 2.0, 3.0 };
+    Point3<double> p2{ 1.0, 2.0, 3.0 };
+    EXPECT_TRUE(AreEqual(p1, p2));
+}
+
+TEST(Point3Test, AreEqual_WithinEpsilon)
+{
+    Point3<double> p1{ 1.0, 2.0, 3.0 };
+    Point3<double> p2{ 1.0, 2.0, 3.0 - (EPSILON<double> *0.5) };
+    EXPECT_TRUE(AreEqual(p1, p2));
+}
+
+TEST(Point3Test, AreEqual_OutsideEpsilon)
+{
+    Point3<double> p1{ 1.0, 2.0, 3.0 };
+    Point3<double> p2{ 1.0, 2.0, 3.0 - (EPSILON<double> *1.5) };
+    EXPECT_FALSE(AreEqual(p1, p2));
 }

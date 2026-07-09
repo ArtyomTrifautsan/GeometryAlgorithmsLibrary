@@ -119,6 +119,7 @@
       <LanguageStandard>stdcpp20</LanguageStandard>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
+      <AdditionalIncludeDirectories>$(SolutionDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>
@@ -155,6 +156,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Algorithms\Intersection.h" />
+    <ClInclude Include="Math\Constants.h" />
     <ClInclude Include="Primitives\Header.h" />
     <ClInclude Include="Primitives\Point2.h" />
     <ClInclude Include="Primitives\Point3.h" />
@@ -162,6 +164,7 @@
     <ClInclude Include="Primitives\Segment3.h" />
     <ClInclude Include="Primitives\Vector2.h" />
     <ClInclude Include="Primitives\Vector3.h" />
+    <ClInclude Include="Math\Utils.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

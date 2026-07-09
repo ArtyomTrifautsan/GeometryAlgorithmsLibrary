@@ -31,5 +31,10 @@ namespace Geometry
         {
             return Point3<T>{(start.x + end.x) / T(2), (start.y + end.y) / T(2), (start.z + end.z) / T(2)};
         }
+
+        [[nodiscard]] constexpr Point3<T> PointAt(T t) const noexcept
+        {
+            return start + Vector() * t;
+        }
     };
 }

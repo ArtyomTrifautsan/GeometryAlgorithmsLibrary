@@ -123,3 +123,31 @@ TEST(Vector3Test, CrossProduct) {
     EXPECT_DOUBLE_EQ(cross_result.y, 6.0);
     EXPECT_DOUBLE_EQ(cross_result.z, -3.0);
 }
+
+TEST(Vector3Test, AreEqual_CompileTime)
+{
+    constexpr Vector3<float> v1{ -1.0f, -2.0f, -3.0f };
+    constexpr Vector3<float> v2{ -1.0f, -2.0f, -3.0f };
+    static_assert(AreEqual(v1, v2), "Compile-time AreEqual failed for Vector3");
+}
+
+TEST(Vector3Test, AreEqual_ExactMatch)
+{
+    Vector3<double> v1{ 0.0, 1.0, 2.0 };
+    Vector3<double> v2{ 0.0, 1.0, 2.0 };
+    EXPECT_TRUE(AreEqual(v1, v2));
+}
+
+TEST(Vector3Test, AreEqual_WithinEpsilon)
+{
+    Vector3<double> v1{ 0.0, 1.0, 2.0 };
+    Vector3<double> v2{ v1.x + (EPSILON<double> *0.5), v1.y, v1.z };
+    EXPECT_TRUE(AreEqual(v1, v2));
+}
+
+TEST(Vector3Test, AreEqual_OutsideEpsilon)
+{
+    Vector3<double> v1{ 0.0, 1.0, 2.0 };
+    Vector3<double> v2{ v1.x, v1.y, v1.z + (EPSILON<double> *1.5) };
+    EXPECT_FALSE(AreEqual(v1, v2));
+}
