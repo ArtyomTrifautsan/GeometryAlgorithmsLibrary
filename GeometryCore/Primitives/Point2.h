@@ -29,10 +29,10 @@ namespace Geometry
 			return *this;
 		}
 
-		[[nodiscard]] constexpr bool Equals(const Point2& other, T tolerance = T(1e-9)) const noexcept
-		{
-			return (*this - other).SqrLen() <= tolerance * tolerance;
-		}
+		//[[nodiscard]] constexpr bool Equals(const Point2& other, T tolerance = T(1e-9)) const noexcept
+		//{
+		//	return (*this - other).SqrLen() <= tolerance * tolerance;
+		//}
 	};
 
 	template <typename T>

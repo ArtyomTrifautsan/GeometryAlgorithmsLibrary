@@ -1,6 +1,6 @@
 #include <gtest/gtest.h>
 
-#include <GeometryCore/Algorithms/Intersection.h>
+#include <GeometryCore/Algorithms/SegmentSegmentIntersection2.h>
 #include <GeometryCore/Math/Constants.h>
 
 using namespace Geometry;

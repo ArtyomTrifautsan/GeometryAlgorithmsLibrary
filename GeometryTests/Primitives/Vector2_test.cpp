@@ -26,7 +26,7 @@ TEST(Vector2Test, LengthCalculations) {
 
 TEST(Vector2Test, NormalizeSuccess) {
     Vector2<double> v(3.0, 0.0);
-    EXPECT_TRUE(v.Normalize());
+    v.Normalize();
     EXPECT_DOUBLE_EQ(v.x, 1.0);
     EXPECT_DOUBLE_EQ(v.y, 0.0);
     EXPECT_DOUBLE_EQ(v.Len(), 1.0);
@@ -34,7 +34,7 @@ TEST(Vector2Test, NormalizeSuccess) {
 
 TEST(Vector2Test, NormalizeZeroLength) {
     Vector2<double> v(0.0, 0.0);
-    EXPECT_FALSE(v.Normalize());
+    v.Normalize();
     EXPECT_DOUBLE_EQ(v.x, 0.0);
     EXPECT_DOUBLE_EQ(v.y, 0.0);
 }

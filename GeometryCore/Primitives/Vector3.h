@@ -26,21 +26,19 @@ namespace Geometry
 
 		[[nodiscard]] T Len() const noexcept { return std::sqrt(SqrLen()); }
 
-		bool Normalize()
+		bool Zero() const noexcept { return IsZero(SqrLen(), EPSILON_SQR<T>); }
+
+		void Normalize() noexcept
 		{
 			T length = Len();
 
-			if (length < EPSILON<T>)
-			{
-				return false;
-			}
+			if (Zero())
+				return;
 
 			T invLen = T(1) / length;
 			x *= invLen;
 			y *= invLen;
 			z *= invLen;
-
-			return true;
 		}
 
 		[[nodiscard]] constexpr Vector3 operator-() const noexcept { return { -x, -y, -z }; }

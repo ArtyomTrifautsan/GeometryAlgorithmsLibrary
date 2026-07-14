@@ -155,7 +155,11 @@
     <ClCompile Include="GeometryCore.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Algorithms\Intersection.h" />
+    <ClInclude Include="Algorithms\SegmentSegmentDistance3.h" />
+    <ClInclude Include="Algorithms\SegmentSegmentIntersection2.h" />
+    <ClInclude Include="Algorithms\IntersectionTypes.h" />
+    <ClInclude Include="Algorithms\PointPointDistance3.h" />
+    <ClInclude Include="Algorithms\PointSegmentDistance3.h" />
     <ClInclude Include="Math\Constants.h" />
     <ClInclude Include="Primitives\Header.h" />
     <ClInclude Include="Primitives\Point2.h" />

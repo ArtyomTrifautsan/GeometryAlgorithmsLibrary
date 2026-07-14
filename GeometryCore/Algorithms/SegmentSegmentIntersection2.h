@@ -5,22 +5,11 @@
 #include <GeometryCore/Primitives/Vector2.h>
 #include <GeometryCore/Math/Utils.h>
 #include <GeometryCore/Math/Constants.h>
+#include <GeometryCore/Algorithms/IntersectionTypes.h>
 
 
 namespace Geometry
 {
-
-	enum class IntersectionType
-	{
-		None,
-		Point,
-		Points,     // Two points of intersection (for example: ray-sphere, ray-circle)
-		Segment,
-		Line,
-		Polygon
-	};
-
-
 	template <typename T>
 	struct SegmentSegmentIntersection2
 	{

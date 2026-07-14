@@ -61,3 +61,30 @@ TEST(Segment3Test, PointAtCalculation) {
     EXPECT_DOUBLE_EQ(point_at_.y, 4.0);
     EXPECT_DOUBLE_EQ(point_at_.z, 6.0);
 }
+
+TEST(Segment3Test, IsDegenerateSamePoints) {
+    Point3<double> p{ 1.0, 2.0, 3.0 };
+    Segment3<double> seg(p, p);
+    EXPECT_TRUE(seg.IsDegenerate());
+}
+
+TEST(Segment3Test, IsDegenerateLessThanEpsilon) {
+    Point3<double> p1{ 1.0, 2.0, 3.0 };
+    Point3<double> p2{ 1.0 + EPSILON<double> *0.5, 2.0, 3.0 };
+    Segment3<double> seg(p1, p2);
+    EXPECT_TRUE(seg.IsDegenerate());
+}
+
+TEST(Segment3Test, IsDegenerateMoreThanEpsilon) {
+    Point3<double> p1{ 1.0, 2.0, 3.0 };
+    Point3<double> p2{ 1.0 + EPSILON<double> *1.5, 2.0, 3.0 };
+    Segment3<double> seg(p1, p2);
+    EXPECT_FALSE(seg.IsDegenerate());
+}
+
+TEST(Segment3Test, IsDegenerateTooMoreThanEpsilon) {
+    Point3<double> p1{ 1.0, 2.0, 3.0 };
+    Point3<double> p2{ 2.0, 2.0, 3.0 };
+    Segment3<double> seg(p1, p2);
+    EXPECT_FALSE(seg.IsDegenerate());
+}

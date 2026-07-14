@@ -36,5 +36,10 @@ namespace Geometry
         {
             return start + Vector() * t;
         }
+
+        [[nodiscard]] constexpr bool IsDegenerate() const noexcept
+        {
+            return AreEqual(start, end);
+        }
     };
 }

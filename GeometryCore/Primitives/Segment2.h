@@ -54,7 +54,7 @@ namespace Geometry
 			Vector2<T> V = Vector();
 
 			T roundoff_tolerance = EPSILON<T> *(Abs(V.x * Vaux.y) + Abs(Vaux.x * V.y));
-			T geometric_tolerance = EPSILON<T> *std::max(Abs(V.x), Abs(V.y)); // ≈ EPSILON * |V|
+			T geometric_tolerance = EPSILON<T> *std::max(Abs(V.x), Abs(V.y));
 			T D_tolerance = std::max(roundoff_tolerance, geometric_tolerance);
 			
 

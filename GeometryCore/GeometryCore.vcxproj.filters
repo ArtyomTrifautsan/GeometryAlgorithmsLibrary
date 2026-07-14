@@ -29,7 +29,7 @@
     <ClInclude Include="Primitives\Vector3.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="Algorithms\Intersection.h">
+    <ClInclude Include="Algorithms\SegmentSegmentIntersection2.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
     <ClInclude Include="Primitives\Segment2.h">
@@ -48,6 +48,18 @@
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
     <ClInclude Include="Math\Utils.h">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="Algorithms\SegmentSegmentDistance3.h">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="Algorithms\IntersectionTypes.h">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="Algorithms\PointPointDistance3.h">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="Algorithms\PointSegmentDistance3.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
   </ItemGroup>
