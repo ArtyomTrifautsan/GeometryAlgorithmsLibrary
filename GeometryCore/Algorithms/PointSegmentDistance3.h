@@ -18,6 +18,7 @@ namespace Geometry
     {
         IntersectionType type = IntersectionType::None;
         T distance = 0;
+        Point3<T> point{};  // closest point
     };
 
     template <typename T>
@@ -26,24 +27,25 @@ namespace Geometry
         if (segment.IsDegenerate())
         {
             PointPointDistance3<T> auxResult = Distance(segment.start, point);
-            return PointSegmentDistance3<T>{ auxResult.type, auxResult.distance };
+            return PointSegmentDistance3<T>{ auxResult.type, auxResult.distance, segment.start };
         }
 
         Vector3<T> V = segment.Vector();
         Vector3<T> PS = point - segment.start;
         if (PS.Zero())
         {
-            return PointSegmentDistance3<T>{ IntersectionType::Point, T(0)};
+            return PointSegmentDistance3<T>{ IntersectionType::Point, T(0), segment.start};
         }
 
         T t = Dot(V, PS) / V.SqrLen();
         t = std::clamp(t, T(0), T(1));
-        Vector3<T> res = segment.PointAt(t) - point;
+        Point3<T> closest = segment.PointAt(t);
+        Vector3<T> res = closest - point;
 
         if (res.Zero())
         {
-            return PointSegmentDistance3<T>{ IntersectionType::Point, T(0) };
+            return PointSegmentDistance3<T>{ IntersectionType::Point, T(0), closest };
         }
-        return PointSegmentDistance3<T>{ IntersectionType::None, res.Len() };
+        return PointSegmentDistance3<T>{ IntersectionType::None, res.Len(), closest };
     }
 }

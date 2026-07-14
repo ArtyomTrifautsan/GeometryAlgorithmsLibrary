@@ -99,6 +99,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Algorithms\SegmentSegmentDistance3_test.cpp" />
     <ClCompile Include="Algorithms\SegmentSegmentIntersection2_test.cpp" />
     <ClCompile Include="Algorithms\PointSegmentDistance3_test.cpp" />
     <ClCompile Include="Math\Utils_test.cpp" />

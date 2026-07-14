@@ -6,6 +6,8 @@
 #include <GeometryCore/Math/Utils.h>
 #include <GeometryCore/Math/Constants.h>
 #include <GeometryCore/Algorithms/IntersectionTypes.h>
+#include <GeometryCore/Algorithms/PointSegmentDistance3.h>
+#include <GeometryCore/Algorithms/PointPointDistance3.h>
 
 
 namespace Geometry
@@ -19,9 +21,6 @@ namespace Geometry
         Point3<T> point1{};
         Point3<T> point2{};
         Segment3<T> segment{};
-
-        T s = 0;
-        T t = 0;
 
         explicit operator bool() const
         {
@@ -37,15 +36,36 @@ namespace Geometry
 
         if (IsDegFirst && IsDegSecond)
         {
-
+            PointPointDistance3 aux_res = Distance(first.start, second.start);
+            return SegmentSegmentDistance3<T>{
+                aux_res.type,
+                aux_res.distance,
+                first.start,
+                second.start,
+                {}
+            };
         }
         else if (IsDegFirst)
         {
-
+            PointSegmentDistance3 aux_res = Distance(second, first.start);
+            return SegmentSegmentDistance3<T>{
+                aux_res.type,
+                aux_res.distance,
+                first.start,
+                aux_res.point,
+                {}
+            };
         }
         else if (IsDegSecond)
         {
-
+            PointSegmentDistance3 aux_res = Distance(first, second.start);
+            return SegmentSegmentDistance3<T>{
+                aux_res.type,
+                aux_res.distance,
+                aux_res.point,
+                second.start,
+                {}
+            };
         }
 
         Vector3<T> u = first.Vector();
@@ -71,7 +91,9 @@ namespace Geometry
         T sn, sd;
         T tn, td;
 
-        if (D < D_tolerance)
+        bool areCollinear = (D < D_tolerance);
+
+        if (areCollinear)
         {
             sn = T(0);
             sd = T(1);
@@ -143,50 +165,60 @@ namespace Geometry
 
         Point3<T> P1 = first.PointAt(s);
         Point3<T> P2 = second.PointAt(t);
-        T distance = (P1 - P2).Length();
+        T distance = (P1 - P2).Len();
 
         IntersectionType final_type = IntersectionType::None;
         Segment3<T> overlap_segment{};
 
-        if (IsZero(distance))
+        T intersection_tolerance = EPSILON<T> *max_scale;
+        if (IsZero(distance, intersection_tolerance))
         {
-            T s0 = -d / a;
-            T s1 = (-d + b) / a;
-
-            T s_min = std::min(s0, s1);
-            T s_max = std::max(s0, s1);
-
-            s_min = std::max(T(0), s_min);
-            s_max = std::min(T(1), s_max);
-
-            if (s_min <= s_max)
+            if (areCollinear)
             {
-                if (AreEqual(s_min, s_max))
+                T s0 = -d / a;
+                T s1 = (-d + b) / a;
+
+                T s_min = std::min(s0, s1);
+                T s_max = std::max(s0, s1);
+
+                s_min = std::max(T(0), s_min);
+                s_max = std::min(T(1), s_max);
+
+                if (s_min <= s_max)
                 {
-                    final_type = IntersectionType::Point;
-                    P1 = first.PointAt(s_min);
-                    P2 = P1;
+                    if (AreEqual(s_min, s_max))
+                    {
+                        final_type = IntersectionType::Point;
+                        P1 = first.PointAt(s_min);
+                        P2 = P1;
+                    }
+                    else
+                    {
+                        final_type = IntersectionType::Segment;
+                        overlap_segment = Segment3<T>(first.PointAt(s_min), first.PointAt(s_max));
+                    }
                 }
                 else
                 {
-                    final_type = IntersectionType::Segment;
-                    overlap_segment = Segment3<T>(first.PointAt(s_min), first.PointAt(s_max));
+                    final_type = IntersectionType::None;
                 }
+            }
+            else
+            {
+                final_type = IntersectionType::Point;
             }
         }
         else
         {
-            final_type = IntersectionType::Point;
+            final_type = IntersectionType::None;
         }
 
         return SegmentSegmentDistance3<T>{
-            IntersectionType::None,
+            final_type,
             distance,
             P1,
             P2,
-            overlap_segment,
-            s,
-            t
+            overlap_segment
         };
 	}
 }
