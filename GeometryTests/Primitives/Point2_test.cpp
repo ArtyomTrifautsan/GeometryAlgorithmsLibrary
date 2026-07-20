@@ -6,7 +6,6 @@
 
 using namespace Geometry;
 
-
 TEST(Point2Test, DefaultConstructor) {
     Point2<double> p;
     EXPECT_DOUBLE_EQ(p.x, 0.0);

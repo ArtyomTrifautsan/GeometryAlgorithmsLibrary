@@ -99,6 +99,8 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Algorithms\RayTriangleIntersection3_test.cpp" />
+    <ClCompile Include="Algorithms\SegmentPlaneIntersection_test.cpp" />
     <ClCompile Include="Algorithms\SegmentSegmentDistance3_test.cpp" />
     <ClCompile Include="Algorithms\SegmentSegmentIntersection2_test.cpp" />
     <ClCompile Include="Algorithms\PointSegmentDistance3_test.cpp" />
@@ -108,6 +110,7 @@
     <ClCompile Include="Primitives\Point3_test.cpp" />
     <ClCompile Include="Primitives\Segment2_test.cpp" />
     <ClCompile Include="Primitives\Segment3_test.cpp" />
+    <ClCompile Include="Primitives\Triangle3_test.cpp" />
     <ClCompile Include="Primitives\Vector2_test.cpp" />
     <ClCompile Include="Primitives\Vector3_test.cpp" />
     <ClCompile Include="test.cpp" />

@@ -26,7 +26,7 @@ namespace Geometry
 
 		[[nodiscard]] T Len() const noexcept { return std::sqrt(SqrLen()); }
 
-		bool Zero() const noexcept { return IsZero(SqrLen(), EPSILON_SQR<T>); }
+		bool Zero(T eps = EPSILON<T>) const noexcept { return IsZero(SqrLen(), eps * eps); }
 
 		void Normalize() noexcept
 		{
@@ -103,6 +103,12 @@ namespace Geometry
 	}
 
 	template <typename T>
+	[[nodiscard]] constexpr T DotRoundoffTolerance(const Vector3<T>& lhs, const Vector3<T>& rhs, T Tolerance = std::numeric_limits<T>::epsilon()) noexcept
+	{
+		return Tolerance * (Abs(lhs.x * rhs.x) + Abs(lhs.y * rhs.y) + Abs(lhs.z * rhs.z));
+	}
+
+	template <typename T>
 	[[nodiscard]] constexpr Vector3<T> Cross(const Vector3<T>& lhs, const Vector3<T>& rhs) noexcept
 	{
 		return {
@@ -110,6 +116,16 @@ namespace Geometry
 			lhs.z * rhs.x - lhs.x * rhs.z,
 			lhs.x * rhs.y - lhs.y * rhs.x
 		};
+	}
+
+	template <typename T>
+	[[nodiscard]] constexpr T CrossRoundoffTolerance(const Vector3<T>& lhs, const Vector3<T>& rhs, T Tolerance = std::numeric_limits<T>::epsilon()) noexcept
+	{
+		return Tolerance * (
+			Abs(lhs.y * rhs.z) + Abs(lhs.z * rhs.y) +
+			Abs(lhs.z * rhs.x) + Abs(lhs.x * rhs.z) +
+			Abs(lhs.x * rhs.y) + Abs(lhs.y * rhs.x)
+		);
 	}
 
 	template <typename T>

@@ -25,7 +25,7 @@ namespace Geometry
 		
 		[[nodiscard]] T Len() const noexcept { return std::sqrt(SqrLen()); }
 
-		bool Zero() const noexcept { return IsZero(SqrLen(), EPSILON_SQR<T>); }
+		bool Zero(T eps = EPSILON<T>) const noexcept { return IsZero(SqrLen(), eps * eps); }
 
 		void Normalize() noexcept
 		{

@@ -155,6 +155,8 @@
     <ClCompile Include="GeometryCore.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Algorithms\RayTriangleIntersection3.h" />
+    <ClInclude Include="Algorithms\SegmentPlaneIntersection3.h" />
     <ClInclude Include="Algorithms\SegmentSegmentDistance3.h" />
     <ClInclude Include="Algorithms\SegmentSegmentIntersection2.h" />
     <ClInclude Include="Algorithms\IntersectionTypes.h" />
@@ -162,10 +164,13 @@
     <ClInclude Include="Algorithms\PointSegmentDistance3.h" />
     <ClInclude Include="Math\Constants.h" />
     <ClInclude Include="Primitives\Header.h" />
+    <ClInclude Include="Primitives\Plane3.h" />
     <ClInclude Include="Primitives\Point2.h" />
     <ClInclude Include="Primitives\Point3.h" />
+    <ClInclude Include="Primitives\Ray3.h" />
     <ClInclude Include="Primitives\Segment2.h" />
     <ClInclude Include="Primitives\Segment3.h" />
+    <ClInclude Include="Primitives\Triangle3.h" />
     <ClInclude Include="Primitives\Vector2.h" />
     <ClInclude Include="Primitives\Vector3.h" />
     <ClInclude Include="Math\Utils.h" />
