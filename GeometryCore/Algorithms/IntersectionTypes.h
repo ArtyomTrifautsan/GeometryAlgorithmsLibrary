@@ -9,6 +9,7 @@ namespace Geometry
 		Points,     // Two points of intersection (for example: ray-sphere, ray-circle)
 		Segment,
 		Line,
+		Ray,
 		Polygon
 	};
 }

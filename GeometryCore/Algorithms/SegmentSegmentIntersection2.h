@@ -1,5 +1,6 @@
 #pragma once
 
+#include <GeometryCore/Algorithms/LineLineIntersection2.h>
 #include <GeometryCore/Primitives/Segment2.h>
 #include <GeometryCore/Primitives/Point2.h>
 #include <GeometryCore/Primitives/Vector2.h>
@@ -56,86 +57,71 @@ namespace Geometry
 
 		Vector2<T> Va = a.Vector();
 		Vector2<T> Vb = b.Vector();
-		Vector2<T> Vdelta = b.start - a.start;
 
-		T D = Cross(Va, Vb);
-		T D_tolerance = EPSILON<T> * (Abs(Va.x * Vb.y) + Abs(Va.y * Vb.x));
+		auto LineIntersectionInfo = Intersect(Line2<T>{a.start, Va}, Line2<T>{b.start, Vb});
 
-		if (!IsZero(D, D_tolerance))
+		if (LineIntersectionInfo.type == IntersectionType::Point)
 		{
-			T invD = T(1.0 / D);
-			T ta = Cross(Vdelta, Vb) * invD;
-			T tb = Cross(Vdelta, Va) * invD;
-
-			if (IsGreaterOrEqual(ta, T(0)) && IsLessOrEqual(ta, T(1)) &&
-				IsGreaterOrEqual(tb, T(0)) && IsLessOrEqual(tb, T(1)))
+			if (IsGreaterOrEqual(LineIntersectionInfo.ta, T(0)) && IsLessOrEqual(LineIntersectionInfo.ta, T(1)) &&
+				IsGreaterOrEqual(LineIntersectionInfo.tb, T(0)) && IsLessOrEqual(LineIntersectionInfo.tb, T(1)))
 			{
-				Point2<T> intersectionPoint = a.PointAt(ta);
-				return SegmentSegmentIntersection2<T>{ IntersectionType::Point, intersectionPoint };
+				return { IntersectionType::Point, LineIntersectionInfo.point };
 			}
-			else
-			{
-				return { IntersectionType::None };
-			}
-		}
-
-		T delta = Cross(Vdelta, Va);
-		T delta_tolerance = EPSILON<T> *(Abs(Vdelta.x * Va.y) + Abs(Vdelta.y * Va.x));
-
-		if (!IsZero(delta, delta_tolerance))
-		{
 			return { IntersectionType::None };
 		}
 
-		bool overlapping = false;
-		bool useX = Abs(Va.x) > Abs(Va.y);
-
-		if (useX)
+		if (LineIntersectionInfo.type == IntersectionType::Line)
 		{
-			T min1 = std::min(a.start.x, a.end.x);
-			T max1 = std::max(a.start.x, a.end.x);
-			T min2 = std::min(b.start.x, b.end.x);
-			T max2 = std::max(b.start.x, b.end.x);
-
-			overlapping = IsGreaterOrEqual(max1, min2) && IsLessOrEqual(min1, max2);
-		}
-		else
-		{
-			T min1 = std::min(a.start.y, a.end.y);
-			T max1 = std::max(a.start.y, a.end.y);
-			T min2 = std::min(b.start.y, b.end.y);
-			T max2 = std::max(b.start.y, b.end.y);
-
-			overlapping = IsGreaterOrEqual(max1, min2) && IsLessOrEqual(min1, max2);
-		}
-
-		if (overlapping)
-		{
-			Point2<T> points[4] = { a.start, a.end, b.start, b.end };
+			bool overlapping = false;
+			bool useX = Abs(Va.x) > Abs(Va.y);
 
 			if (useX)
 			{
-				std::sort(std::begin(points), std::end(points), [](const Point2<T>& lhs, const Point2<T>& rhs) {
-					return lhs.x < rhs.x;
-				});
+				T min1 = std::min(a.start.x, a.end.x);
+				T max1 = std::max(a.start.x, a.end.x);
+				T min2 = std::min(b.start.x, b.end.x);
+				T max2 = std::max(b.start.x, b.end.x);
+
+				overlapping = IsGreaterOrEqual(max1, min2) && IsLessOrEqual(min1, max2);
 			}
 			else
 			{
-				std::sort(std::begin(points), std::end(points), [](const Point2<T>& lhs, const Point2<T>& rhs) {
-					return lhs.y < rhs.y;
-				});
+				T min1 = std::min(a.start.y, a.end.y);
+				T max1 = std::max(a.start.y, a.end.y);
+				T min2 = std::min(b.start.y, b.end.y);
+				T max2 = std::max(b.start.y, b.end.y);
+
+				overlapping = IsGreaterOrEqual(max1, min2) && IsLessOrEqual(min1, max2);
 			}
 
-			Point2<T> p1 = points[1];
-			Point2<T> p2 = points[2];
-
-			// The case when segments overlay at one point
-			if (AreEqual(p1, p2))
+			if (overlapping)
 			{
-				return SegmentSegmentIntersection2<T>{ IntersectionType::Point, p1 };
-			}
+				Point2<T> points[4] = { a.start, a.end, b.start, b.end };
 
-			return SegmentSegmentIntersection2<T>{ IntersectionType::Segment, {}, Segment2<T>(p1, p2) };
+				if (useX)
+				{
+					std::sort(std::begin(points), std::end(points), [](const Point2<T>& lhs, const Point2<T>& rhs) {
+						return lhs.x < rhs.x;
+						});
+				}
+				else
+				{
+					std::sort(std::begin(points), std::end(points), [](const Point2<T>& lhs, const Point2<T>& rhs) {
+						return lhs.y < rhs.y;
+						});
+				}
+
+				Point2<T> p1 = points[1];
+				Point2<T> p2 = points[2];
+
+				// The case when segments overlay at one point
+				if (AreEqual(p1, p2))
+				{
+					return SegmentSegmentIntersection2<T>{ IntersectionType::Point, p1 };
+				}
+
+				return SegmentSegmentIntersection2<T>{ IntersectionType::Segment, {}, Segment2<T>(p1, p2) };
+			}
 		}
 
 		return { IntersectionType::None };
