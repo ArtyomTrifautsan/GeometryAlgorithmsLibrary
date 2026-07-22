@@ -100,16 +100,19 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Algorithms\LineLineIntersection2_test.cpp" />
+    <ClCompile Include="Algorithms\PointPolygonLocation2_test.cpp" />
     <ClCompile Include="Algorithms\RaySegmentIntersection2_test.cpp" />
     <ClCompile Include="Algorithms\RayTriangleIntersection3_test.cpp" />
     <ClCompile Include="Algorithms\SegmentPlaneIntersection_test.cpp" />
     <ClCompile Include="Algorithms\SegmentSegmentDistance3_test.cpp" />
     <ClCompile Include="Algorithms\SegmentSegmentIntersection2_test.cpp" />
     <ClCompile Include="Algorithms\PointSegmentDistance3_test.cpp" />
+    <ClCompile Include="BoundingVolumes\AABB2_test.cpp" />
     <ClCompile Include="Math\Utils_test.cpp" />
     <ClCompile Include="Algorithms\PointPointDistance3_test.cpp" />
     <ClCompile Include="Primitives\Point2_test.cpp" />
     <ClCompile Include="Primitives\Point3_test.cpp" />
+    <ClCompile Include="Primitives\Polygon2_test.cpp" />
     <ClCompile Include="Primitives\Segment2_test.cpp" />
     <ClCompile Include="Primitives\Segment3_test.cpp" />
     <ClCompile Include="Primitives\Triangle3_test.cpp" />

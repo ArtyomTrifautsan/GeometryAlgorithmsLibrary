@@ -98,5 +98,8 @@
     <ClInclude Include="Primitives\Line2.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
+    <ClInclude Include="BoundingVolumes\AABB2.h">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

@@ -166,6 +166,7 @@
     <ClInclude Include="Algorithms\IntersectionTypes.h" />
     <ClInclude Include="Algorithms\PointPointDistance3.h" />
     <ClInclude Include="Algorithms\PointSegmentDistance3.h" />
+    <ClInclude Include="BoundingVolumes\AABB2.h" />
     <ClInclude Include="Math\Constants.h" />
     <ClInclude Include="Primitives\Header.h" />
     <ClInclude Include="Primitives\Line2.h" />

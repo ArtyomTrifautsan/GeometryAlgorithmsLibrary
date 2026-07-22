@@ -54,25 +54,20 @@ namespace Geometry
 
         Vector2<T> vDelta = second.origin - first.origin;
 
-        T D = Cross(first.direction, second.direction);
-        T D_tolerance = EPSILON<T> * (Abs(first.direction.x * second.direction.y) + Abs(first.direction.y * second.direction.x));
-
-        if (!IsZero(D, D_tolerance))
+        if (!Parallel(first.direction, second.direction))
         {
+            T D = Cross(first.direction, second.direction);
             T invD = T(1.0 / D);
             T ta = Cross(vDelta, second.direction) * invD;
             T tb = Cross(vDelta, first.direction) * invD;
             return { IntersectionType::Point, first.origin + first.direction * ta, ta, tb };
         }
 
-        T delta = Cross(vDelta, first.direction);
-        T delta_tolerance = EPSILON<T> * (Abs(vDelta.x * first.direction.y) + Abs(vDelta.y * first.direction.x));
-
-        if (!IsZero(delta, delta_tolerance))
+        if (vDelta.Zero() || Parallel(vDelta, first.direction))
         {
-            return { IntersectionType::None, {}, T(0), T(0) };
+            return { IntersectionType::Line, {}, T(0), T(0) };
         }
 
-        return { IntersectionType::Line, {}, T(0), T(0) };
+        return { IntersectionType::None, {}, T(0), T(0) };
     }
 }

@@ -18,7 +18,7 @@ namespace Geometry
     {
         IntersectionType type = IntersectionType::None;
         T distance = 0;
-        Point3<T> point{};  // closest point
+        Point3<T> point{};  // closest point on segment
     };
 
     template <typename T>

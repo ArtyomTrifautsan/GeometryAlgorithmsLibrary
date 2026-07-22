@@ -50,7 +50,9 @@ namespace Geometry
 
         T geometric_tolerance = EPSILON<T> * EPSILON<T> * EPSILON<T> * max_edge1 * max_ray_direction * max_edge2;
 
-        T roundoff_tolerance = CrossRoundoffTolerance(ray.direction, edge2) + 
+        Vector3<T> cross_roundoff_tolerance_v = CrossRoundoffTolerance(edge1, edge2);
+        T cross_roundoff_tolerance = std::max({ cross_roundoff_tolerance_v.x, cross_roundoff_tolerance_v.y, cross_roundoff_tolerance_v.z });
+        T roundoff_tolerance = cross_roundoff_tolerance +
             DotRoundoffTolerance(edge1, pvec) + 
             std::numeric_limits<T>::epsilon() * Abs(det);
 

@@ -144,3 +144,124 @@ TEST(Vector2Test, AreEqual_OutsideEpsilon)
     Vector2<double> v2{ -100.25, 4.5 + (EPSILON<double> *1.5) };
     EXPECT_FALSE(AreEqual(v1, v2));
 }
+
+TEST(Vector2Test, Parallel_True)
+{
+    Vector2<double> v1(2.0, 4.0);
+    Vector2<double> v2(1.0, 2.0);
+
+    EXPECT_TRUE(Parallel(v1, v2));
+}
+
+TEST(Vector2Test, Parallel_True_OppositeDirection)
+{
+    Vector2<double> v1(1.0, 2.0);
+    Vector2<double> v2(-2.0, -4.0);
+
+    EXPECT_TRUE(Parallel(v1, v2));
+}
+
+TEST(Vector2Test, Parallel_False)
+{
+    Vector2<double> v1(2.0, 4.0);
+    Vector2<double> v2(1.0, 5.0);
+
+    EXPECT_FALSE(Parallel(v1, v2));
+}
+
+TEST(Vector2Test, Parallel_NegativeCrossProduct)
+{
+    Vector2<double> v1(1.0, 0.0);
+    Vector2<double> v2(0.0, -1.0);
+
+    EXPECT_FALSE(Parallel(v1, v2));
+}
+
+TEST(Vector2Test, Parallel_BothZero)
+{
+    Vector2<double> v1(0.0, 0.0);
+    Vector2<double> v2(0.0, 0.0);
+
+    EXPECT_FALSE(Parallel(v1, v2));
+}
+
+TEST(Vector2Test, Parallel_OneZero)
+{
+    Vector2<double> v1(0.0, 0.0);
+    Vector2<double> v2(1.0, 1.0);
+
+    EXPECT_FALSE(Parallel(v1, v2));
+    EXPECT_FALSE(Parallel(v2, v1));
+}
+
+TEST(Vector2Test, Parallel_NearlyParallel)
+{
+    Vector2<double> v1(1.0, 2.0);
+    Vector2<double> v2(1.0 + 1e-15, 2.0 + 2e-15);
+
+    EXPECT_TRUE(Parallel(v1, v2));
+}
+
+TEST(Vector2Test, Perpendicular_True)
+{
+    Vector2<double> v1(3.0, 4.0);
+    Vector2<double> v2(-4.0, 3.0);
+
+    EXPECT_TRUE(Perpendicular(v1, v2));
+}
+
+TEST(Vector2Test, Perpendicular_False)
+{
+    Vector2<double> v1(3.0, 4.0);
+    Vector2<double> v2(-4.0, -4.0);
+
+    EXPECT_FALSE(Perpendicular(v1, v2));
+}
+
+TEST(Vector2Test, Perpendicular_NegativeDotProduct)
+{
+    Vector2<double> v1(1.0, 0.0);
+    Vector2<double> v2(-1.0, 1.0);
+
+    EXPECT_FALSE(Perpendicular(v1, v2));
+}
+
+TEST(Vector2Test, Perpendicular_BothZero)
+{
+    Vector2<double> v1(0.0, 0.0);
+    Vector2<double> v2(0.0, 0.0);
+
+    EXPECT_FALSE(Perpendicular(v1, v2));
+}
+
+TEST(Vector2Test, Perpendicular_OneZero)
+{
+    Vector2<double> v1(0.0, 0.0);
+    Vector2<double> v2(1.0, 0.0);
+
+    EXPECT_FALSE(Perpendicular(v1, v2));
+}
+
+TEST(Vector2Test, Perpendicular_NearlyPerpendicular)
+{
+    Vector2<double> v1(1.0, 0.0);
+    Vector2<double> v2(0.0, 1.0 + 1e-15);
+
+    EXPECT_TRUE(Perpendicular(v1, v2));
+}
+
+TEST(Vector2Test, Parallel_LargeCoordinates)
+{
+    Vector2<double> v1(1e6, 2e6);
+    Vector2<double> v2(2e6, 4e6);
+
+    EXPECT_TRUE(Parallel(v1, v2));
+}
+
+TEST(Vector2Test, Parallel_SmallCoordinates)
+{
+    Vector2<double> v1(1e-9, 2e-9);
+    Vector2<double> v2(2e-9, 4e-9);
+
+    EXPECT_TRUE(Parallel(v1, v2));
+}

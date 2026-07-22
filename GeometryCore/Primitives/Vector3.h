@@ -119,18 +119,45 @@ namespace Geometry
 	}
 
 	template <typename T>
-	[[nodiscard]] constexpr T CrossRoundoffTolerance(const Vector3<T>& lhs, const Vector3<T>& rhs, T Tolerance = std::numeric_limits<T>::epsilon()) noexcept
+	[[nodiscard]] constexpr Vector3<T> CrossRoundoffTolerance(const Vector3<T>& lhs, const Vector3<T>& rhs, T Tolerance = std::numeric_limits<T>::epsilon()) noexcept
 	{
-		return Tolerance * (
-			Abs(lhs.y * rhs.z) + Abs(lhs.z * rhs.y) +
-			Abs(lhs.z * rhs.x) + Abs(lhs.x * rhs.z) +
-			Abs(lhs.x * rhs.y) + Abs(lhs.y * rhs.x)
-		);
+		return Vector3<T>{
+			Tolerance* (Abs(lhs.y* rhs.z) + Abs(lhs.z * rhs.y)),
+			Tolerance* (Abs(lhs.z* rhs.x) + Abs(lhs.x * rhs.z)),
+			Tolerance* (Abs(lhs.x* rhs.y) + Abs(lhs.y * rhs.x))
+		};
 	}
 
 	template <typename T>
 	[[nodiscard]] constexpr bool AreEqual(const Vector3<T>& lhs, const Vector3<T>& rhs) noexcept
 	{
 		return AreEqual(lhs.x, rhs.x) && AreEqual(lhs.y, rhs.y) && AreEqual(lhs.z, rhs.z);
+	}
+
+	template <typename T>
+	[[nodiscard]] constexpr bool Parallel(const Vector3<T>& lhs, const Vector3<T>& rhs) noexcept
+	{
+		if (lhs.Zero() || rhs.Zero())
+		{
+			return false;
+		}
+
+		Vector3<T> crossResult = Cross(lhs, rhs);
+		Vector3<T> tolerance = CrossRoundoffTolerance(lhs, rhs);
+
+		return IsZero(crossResult.x, tolerance.x) &&
+			IsZero(crossResult.y, tolerance.y) &&
+			IsZero(crossResult.z, tolerance.z);
+	}
+
+	template <typename T>
+	[[nodiscard]] constexpr bool Perpendicular(const Vector3<T>& lhs, const Vector3<T>& rhs) noexcept
+	{
+		if (lhs.Zero() || rhs.Zero())
+		{
+			return false;
+		}
+
+		return IsZero(Dot(lhs, rhs), DotRoundoffTolerance(lhs, rhs));
 	}
 }

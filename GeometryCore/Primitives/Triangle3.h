@@ -35,7 +35,8 @@ namespace Geometry
 			T max_edge2 = std::max({ Abs(edge2.x), Abs(edge2.y), Abs(edge2.z) });
 
 			T geometric_tolerance = EPSILON<T> * max_edge1 * max_edge2;
-			T roundoff_tolerance = CrossRoundoffTolerance(edge1, edge2);
+			Vector3<T> roundoff_tolerance_v = CrossRoundoffTolerance(edge1, edge2);
+			T roundoff_tolerance = std::max({ roundoff_tolerance_v.x, roundoff_tolerance_v.y, roundoff_tolerance_v.z });
 
 			T D_tolerance = std::max(geometric_tolerance, roundoff_tolerance);
 

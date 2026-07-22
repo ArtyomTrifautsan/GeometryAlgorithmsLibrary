@@ -102,14 +102,14 @@ TEST(LineLineIntersection2D, BothLinesDegenerateSamePoint)
 
 TEST(LineLineIntersection2D, VerySmallCoordinates)
 {
-    Line2<double> a(Point2<double>(0.0, 0.0), Vector2<double>(EPSILON<double> *1.2, 0.0));
-    Line2<double> b(Point2<double>(EPSILON<double> *1.1, -EPSILON<double> *1.1), Vector2<double>(0.0, EPSILON<double> *1.2));
+    Line2<double> a(Point2<double>(0.0, 0.0), Vector2<double>(EPSILON<double> * 1.2, 0.0));
+    Line2<double> b(Point2<double>(EPSILON<double> * 1.1, -EPSILON<double> * 1.1), Vector2<double>(0.0, EPSILON<double> * 1.2));
 
     auto result = Intersect(a, b);
 
     EXPECT_TRUE(result);
     EXPECT_EQ(result.type, IntersectionType::Point);
-    EXPECT_NEAR(result.point.x, EPSILON<double> *1.1, EPSILON<double>);
+    EXPECT_NEAR(result.point.x, EPSILON<double> * 1.1, EPSILON<double>);
     EXPECT_NEAR(result.point.y, 0.0, EPSILON<double>);
 }
 

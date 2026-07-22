@@ -93,13 +93,47 @@ namespace Geometry
 	}
 
 	template <typename T>
+	[[nodiscard]] constexpr T DotRoundoffTolerance(const Vector2<T>& lhs, const Vector2<T>& rhs, T Tolerance = std::numeric_limits<T>::epsilon()) noexcept
+	{
+		return Tolerance * (Abs(lhs.x * rhs.x) + Abs(lhs.y * rhs.y));
+	}
+
+	template <typename T>
 	[[nodiscard]] constexpr T Cross(const Vector2<T>& lhs, const Vector2<T>& rhs) noexcept {
 		return lhs.x * rhs.y - lhs.y * rhs.x;
+	}
+
+	template <typename T>
+	[[nodiscard]] constexpr T CrossRoundoffTolerance(const Vector2<T>& lhs, const Vector2<T>& rhs, T Tolerance = std::numeric_limits<T>::epsilon()) noexcept
+	{
+		return Tolerance * (Abs(lhs.x * rhs.y) + Abs(lhs.y * rhs.x));
 	}
 
 	template <typename T>
 	[[nodiscard]] constexpr bool AreEqual(const Vector2<T>& lhs, const Vector2<T>& rhs) noexcept
 	{
 		return AreEqual(lhs.x, rhs.x) && AreEqual(lhs.y, rhs.y);
+	}
+
+	template <typename T>
+	[[nodiscard]] constexpr bool Parallel(const Vector2<T>& lhs, const Vector2<T>& rhs) noexcept
+	{
+		if (lhs.Zero() || rhs.Zero())
+		{
+			return false;
+		}
+
+		return IsZero(Cross(lhs, rhs), CrossRoundoffTolerance(lhs, rhs));
+	}
+
+	template <typename T>
+	[[nodiscard]] constexpr bool Perpendicular(const Vector2<T>& lhs, const Vector2<T>& rhs) noexcept
+	{
+		if (lhs.Zero() || rhs.Zero())
+		{
+			return false;
+		}
+
+		return IsZero(Dot(lhs, rhs), DotRoundoffTolerance(lhs, rhs));
 	}
 }
