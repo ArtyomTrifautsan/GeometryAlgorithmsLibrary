@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|Win32">
@@ -112,7 +112,7 @@
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp20</LanguageStandard>
       <AdditionalIncludeDirectories>$(SolutionDir)external/SFML-3.0.2\include;$(ProjectDir)external\imgui;
-$(ProjectDir)external\imgui-sfml;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+$(ProjectDir)external\imgui-sfml;%(AdditionalIncludeDirectories);$(SolutionDir)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -134,7 +134,7 @@ $(ProjectDir)external\imgui-sfml;%(AdditionalIncludeDirectories)</AdditionalIncl
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp20</LanguageStandard>
       <AdditionalIncludeDirectories>$(SolutionDir)external/SFML-3.0.2\include;$(ProjectDir)external\imgui;
-$(ProjectDir)external\imgui-sfml;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+$(ProjectDir)external\imgui-sfml;%(AdditionalIncludeDirectories);$(SolutionDir)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>

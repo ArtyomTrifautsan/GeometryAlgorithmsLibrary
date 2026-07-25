@@ -119,7 +119,7 @@
       <LanguageStandard>stdcpp20</LanguageStandard>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
-      <AdditionalIncludeDirectories>$(SolutionDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir);%(AdditionalIncludeDirectories);$(SolutionDir)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>
@@ -141,6 +141,7 @@
       <LanguageStandard>stdcpp20</LanguageStandard>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
+      <AdditionalIncludeDirectories>;$(SolutionDir)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>
@@ -168,12 +169,15 @@
     <ClInclude Include="Algorithms\PointSegmentDistance3.h" />
     <ClInclude Include="BoundingVolumes\AABB2.h" />
     <ClInclude Include="Math\Constants.h" />
+    <ClInclude Include="Primitives\CubicBezierCurve2.h" />
     <ClInclude Include="Primitives\Header.h" />
     <ClInclude Include="Primitives\Line2.h" />
+    <ClInclude Include="Primitives\LinearBezierCurve2.h" />
     <ClInclude Include="Primitives\Plane3.h" />
     <ClInclude Include="Primitives\Point2.h" />
     <ClInclude Include="Primitives\Point3.h" />
     <ClInclude Include="Primitives\Polygon2.h" />
+    <ClInclude Include="Primitives\QuadraticBezierCurve2.h" />
     <ClInclude Include="Primitives\Ray2.h" />
     <ClInclude Include="Primitives\Ray3.h" />
     <ClInclude Include="Primitives\Segment2.h" />
