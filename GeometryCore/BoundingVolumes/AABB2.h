@@ -18,10 +18,10 @@ namespace Geometry
             : min{ min_ }, max{ max_ }
         {}
 
-        [[nodiscard]] constexpr bool Contains(const Point2<T>& point) const noexcept
+        [[nodiscard]] constexpr bool Contains(const Point2<T>& point, T EPS = EPSILON<T>) const noexcept
         {
-            return IsGreaterOrEqual(point.x, min.x) && IsLessOrEqual(point.x, max.x) &&
-                IsGreaterOrEqual(point.y, min.y) && IsLessOrEqual(point.y, max.y);
+            return IsGreaterOrEqual(point.x, min.x, EPS) && IsLessOrEqual(point.x, max.x, EPS) &&
+                IsGreaterOrEqual(point.y, min.y, EPS) && IsLessOrEqual(point.y, max.y, EPS);
         }
     };
 }

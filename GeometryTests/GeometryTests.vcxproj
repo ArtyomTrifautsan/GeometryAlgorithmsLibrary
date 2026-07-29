@@ -101,7 +101,9 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Algorithms\LineLineIntersection2_test.cpp" />
+    <ClCompile Include="Algorithms\PointPointDistance2_test.cpp" />
     <ClCompile Include="Algorithms\PointPolygonLocation2_test.cpp" />
+    <ClCompile Include="Algorithms\PointSegmentDistance2_test.cpp" />
     <ClCompile Include="Algorithms\RaySegmentIntersection2_test.cpp" />
     <ClCompile Include="Algorithms\RayTriangleIntersection3_test.cpp" />
     <ClCompile Include="Algorithms\SegmentPlaneIntersection_test.cpp" />

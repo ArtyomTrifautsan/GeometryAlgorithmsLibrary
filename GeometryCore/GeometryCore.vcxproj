@@ -158,7 +158,9 @@
   <ItemGroup>
     <ClInclude Include="Algorithms\LineLineIntersection2.h" />
     <ClInclude Include="Algorithms\LocationTypes.h" />
+    <ClInclude Include="Algorithms\PointPointDistance2.h" />
     <ClInclude Include="Algorithms\PointPolygonLocation2.h" />
+    <ClInclude Include="Algorithms\PointSegmentDistance2.h" />
     <ClInclude Include="Algorithms\RaySegmentIntersection2.h" />
     <ClInclude Include="Algorithms\RayTriangleIntersection3.h" />
     <ClInclude Include="Algorithms\SegmentPlaneIntersection3.h" />

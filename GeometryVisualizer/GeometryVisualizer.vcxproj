@@ -170,6 +170,15 @@ $(ProjectDir)external\imgui-sfml;%(AdditionalIncludeDirectories);$(SolutionDir)<
     <ClInclude Include="external\imgui\imstb_rectpack.h" />
     <ClInclude Include="external\imgui\imstb_textedit.h" />
     <ClInclude Include="external\imgui\imstb_truetype.h" />
+    <ClInclude Include="Scene\Implements\SceneBezierCurve.h" />
+    <ClInclude Include="Scene\Implements\SceneCubicBezierCurve2.h" />
+    <ClInclude Include="Scene\Implements\SceneObjects.h" />
+    <ClInclude Include="Scene\Interfaces\IInteractable.h" />
+    <ClInclude Include="Scene\Interfaces\ISceneObject.h" />
+    <ClInclude Include="Scene\Renderer.h" />
+    <ClInclude Include="Scene\SceneContext.h" />
+    <ClInclude Include="UI\imguiUI.h" />
+    <ClInclude Include="UI\UIManager.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
