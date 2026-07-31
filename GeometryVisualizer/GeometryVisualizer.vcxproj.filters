@@ -71,16 +71,10 @@
     <ClInclude Include="Scene\Interfaces\IInteractable.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="Scene\Implements\SceneCubicBezierCurve2.h">
-      <Filter>Файлы заголовков</Filter>
-    </ClInclude>
     <ClInclude Include="Scene\Implements\SceneBezierCurve.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
     <ClInclude Include="Scene\SceneContext.h">
-      <Filter>Файлы заголовков</Filter>
-    </ClInclude>
-    <ClInclude Include="Scene\Renderer.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
     <ClInclude Include="UI\UIManager.h">
@@ -90,6 +84,27 @@
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
     <ClInclude Include="UI\imguiUI.h">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="InputSystem\Interfaces\IInputHandler.h">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="InputSystem\InputManager.h">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="InputSystem\Implements\SceneInteractionHandler.h">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="Scene\SceneEditor.h">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="InputSystem\Implements\InputDispatcher.h">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="Application.h">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="Scene\SceneRenderer.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
   </ItemGroup>

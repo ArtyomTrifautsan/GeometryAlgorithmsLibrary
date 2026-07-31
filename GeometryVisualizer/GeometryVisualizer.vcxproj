@@ -170,13 +170,18 @@ $(ProjectDir)external\imgui-sfml;%(AdditionalIncludeDirectories);$(SolutionDir)<
     <ClInclude Include="external\imgui\imstb_rectpack.h" />
     <ClInclude Include="external\imgui\imstb_textedit.h" />
     <ClInclude Include="external\imgui\imstb_truetype.h" />
+    <ClInclude Include="Application.h" />
+    <ClInclude Include="InputSystem\Implements\InputDispatcher.h" />
+    <ClInclude Include="InputSystem\Implements\SceneInteractionHandler.h" />
+    <ClInclude Include="InputSystem\InputManager.h" />
+    <ClInclude Include="InputSystem\Interfaces\IInputHandler.h" />
     <ClInclude Include="Scene\Implements\SceneBezierCurve.h" />
-    <ClInclude Include="Scene\Implements\SceneCubicBezierCurve2.h" />
     <ClInclude Include="Scene\Implements\SceneObjects.h" />
     <ClInclude Include="Scene\Interfaces\IInteractable.h" />
     <ClInclude Include="Scene\Interfaces\ISceneObject.h" />
-    <ClInclude Include="Scene\Renderer.h" />
     <ClInclude Include="Scene\SceneContext.h" />
+    <ClInclude Include="Scene\SceneEditor.h" />
+    <ClInclude Include="Scene\SceneRenderer.h" />
     <ClInclude Include="UI\imguiUI.h" />
     <ClInclude Include="UI\UIManager.h" />
   </ItemGroup>

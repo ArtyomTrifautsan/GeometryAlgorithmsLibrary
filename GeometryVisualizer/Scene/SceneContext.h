@@ -32,14 +32,14 @@ public:
         }
     }
 
-    void Draw(sf::RenderTarget& target) const
-    {
-        for (const auto& obj : m_objects) {
-            if (obj) {
-                obj->Draw(target); // или target.draw(*obj), если ISceneObject наследует sf::Drawable
-            }
-        }
-    }
+    //void Draw(sf::RenderTarget& target) const
+    //{
+    //    for (const auto& obj : m_objects) {
+    //        if (obj) {
+    //            obj->Draw(target); // или target.draw(*obj), если ISceneObject наследует sf::Drawable
+    //        }
+    //    }
+    //}
 
     void SelectObject(ISceneObject* obj)
     {

@@ -10,11 +10,11 @@
 
 #include "UIManager.h" // Ваш класс с логикой отрисовки панелей свойств
 
-class ImGuiUI
+class ImguiUI
 {
 public:
-    ImGuiUI() = default;
-    ~ImGuiUI() { Shutdown(); }
+    ImguiUI() = default;
+    ~ImguiUI() { Shutdown(); }
 
     // Инициализация ImGui (вызывать один раз после создания окна)
     bool Init(sf::RenderWindow& window)

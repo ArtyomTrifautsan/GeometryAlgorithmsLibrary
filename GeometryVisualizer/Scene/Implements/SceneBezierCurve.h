@@ -82,136 +82,140 @@ public:
         };
     }
 
-    void Draw(sf::RenderTarget& target) const override
-    {
-        // Определяем, взаимодействует ли пользователь с объектом
-        const bool isInteracted = (State() == InteractedState::Selected || State() == InteractedState::Dragged);
+    //void Draw(sf::RenderTarget& target) const override
+    //{
+    //    //auto p = GetControlPoint(0);
+    //    //std::cout << "Drawing! Point 0: (" << p.x << ", " << p.y
+    //    //    << ") | Vertices: " << m_drawVertices.getVertexCount() << "\n";
 
-        // --- 1. Отрисовка сама кривая ---
-        if (isInteracted)
-        {
-            // При выделении/перетаскивании рисуем подложку-свечение и утолщенную линию
-            DrawThickLineStrip(target, m_drawVertices, 6.0f, sf::Color(255, 255, 255, 90)); // Мягкий полупрозрачный контур
-            DrawThickLineStrip(target, m_drawVertices, 3.5f, m_curveColor);                  // Основная утолщенная линия
-        }
-        else
-        {
-            // Обычная тонкая кривая в 1px
-            target.draw(m_drawVertices);
-        }
+    //    // Определяем, взаимодействует ли пользователь с объектом
+    //    const bool isInteracted = (State() == InteractedState::Selected || State() == InteractedState::Dragged);
 
-        // --- 2. Отрисовка скелета и опорных точек ---
-        if (m_showSkeleton)
-        {
-            constexpr size_t pointCount = GetControlPointCount();
+    //    // --- 1. Отрисовка сама кривая ---
+    //    if (isInteracted)
+    //    {
+    //        // При выделении/перетаскивании рисуем подложку-свечение и утолщенную линию
+    //        DrawThickLineStrip(target, m_drawVertices, 6.0f, sf::Color(255, 255, 255, 90)); // Мягкий полупрозрачный контур
+    //        DrawThickLineStrip(target, m_drawVertices, 3.5f, m_curveColor);                  // Основная утолщенная линия
+    //    }
+    //    else
+    //    {
+    //        // Обычная тонкая кривая в 1px
+    //        target.draw(m_drawVertices);
+    //    }
 
-            // 2.1 Ломаная скелета
-            sf::VertexArray skeleton(sf::PrimitiveType::LineStrip, pointCount);
-            for (size_t i = 0; i < pointCount; ++i)
-            {
-                auto pt = GetControlPoint(i);
-                skeleton[i] = sf::Vertex(sf::Vector2f(pt.x, pt.y), m_skeletonColor);
-            }
+    //    // --- 2. Отрисовка скелета и опорных точек ---
+    //    if (m_showSkeleton)
+    //    {
+    //        constexpr size_t pointCount = GetControlPointCount();
 
-            if (isInteracted) {
-                DrawThickLineStrip(target, skeleton, 2.0f, m_skeletonColor);
-            }
-            else {
-                target.draw(skeleton);
-            }
+    //        // 2.1 Ломаная скелета
+    //        sf::VertexArray skeleton(sf::PrimitiveType::LineStrip, pointCount);
+    //        for (size_t i = 0; i < pointCount; ++i)
+    //        {
+    //            auto pt = GetControlPoint(i);
+    //            skeleton[i] = sf::Vertex(sf::Vector2f(pt.x, pt.y), m_skeletonColor);
+    //        }
 
-            // 2.2. Контрольные точки
-            float pointRadius = isInteracted ? 7.5f : 4.5f;
-            float outlineThickness = isInteracted ? 2.5f : 1.5f;
+    //        if (isInteracted) {
+    //            DrawThickLineStrip(target, skeleton, 2.0f, m_skeletonColor);
+    //        }
+    //        else {
+    //            target.draw(skeleton);
+    //        }
 
-            sf::CircleShape pointMarker(pointRadius);
-            pointMarker.setOrigin(sf::Vector2f(pointRadius, pointRadius));
-            pointMarker.setFillColor(isInteracted ? sf::Color(255, 220, 50) : m_controlPointsColor);
-            pointMarker.setOutlineThickness(outlineThickness);
-            pointMarker.setOutlineColor(isInteracted ? sf::Color::White : sf::Color(20, 20, 22));
+    //        // 2.2. Контрольные точки
+    //        float pointRadius = isInteracted ? 7.5f : 4.5f;
+    //        float outlineThickness = isInteracted ? 2.5f : 1.5f;
 
-            for (size_t i = 0; i < pointCount; ++i)
-            {
-                auto pt = GetControlPoint(i);
-                pointMarker.setPosition(sf::Vector2f(pt.x, pt.y));
+    //        sf::CircleShape pointMarker(pointRadius);
+    //        pointMarker.setOrigin(sf::Vector2f(pointRadius, pointRadius));
+    //        pointMarker.setFillColor(isInteracted ? sf::Color(255, 220, 50) : m_controlPointsColor);
+    //        pointMarker.setOutlineThickness(outlineThickness);
+    //        pointMarker.setOutlineColor(isInteracted ? sf::Color::White : sf::Color(20, 20, 22));
 
-                // Подсвечиваем перетаскиваемую точку
-                if (isInteracted && static_cast<int>(i) == m_activeControlPointIndex)
-                {
-                    pointMarker.setRadius(9.5f);
-                    pointMarker.setOrigin(sf::Vector2f(9.5f, 9.5f));
-                    pointMarker.setFillColor(sf::Color(255, 90, 40)); // Ярко-оранжевый
-                    pointMarker.setOutlineColor(sf::Color::White);
+    //        for (size_t i = 0; i < pointCount; ++i)
+    //        {
+    //            auto pt = GetControlPoint(i);
+    //            pointMarker.setPosition(sf::Vector2f(pt.x, pt.y));
 
-                    target.draw(pointMarker);
+    //            // Подсвечиваем перетаскиваемую точку
+    //            if (isInteracted && static_cast<int>(i) == m_activeControlPointIndex)
+    //            {
+    //                pointMarker.setRadius(9.5f);
+    //                pointMarker.setOrigin(sf::Vector2f(9.5f, 9.5f));
+    //                pointMarker.setFillColor(sf::Color(255, 90, 40)); // Ярко-оранжевый
+    //                pointMarker.setOutlineColor(sf::Color::White);
 
-                    // Возвращаем дефолтные параметры маркеру
-                    pointMarker.setRadius(pointRadius);
-                    pointMarker.setOrigin(sf::Vector2f(pointRadius, pointRadius));
-                    pointMarker.setFillColor(sf::Color(255, 220, 50));
-                }
-                else
-                {
-                    target.draw(pointMarker);
-                }
-            }
-        }
+    //                target.draw(pointMarker);
 
-        // --- 3. Отрисовка касательного вектора со стрелочкой ---
-        if (m_showTangents)
-        {
-            auto pt = m_coreCurve.PointAt(m_tangentParam);
+    //                // Возвращаем дефолтные параметры маркеру
+    //                pointMarker.setRadius(pointRadius);
+    //                pointMarker.setOrigin(sf::Vector2f(pointRadius, pointRadius));
+    //                pointMarker.setFillColor(sf::Color(255, 220, 50));
+    //            }
+    //            else
+    //            {
+    //                target.draw(pointMarker);
+    //            }
+    //        }
+    //    }
 
-            Geometry::Vector2<float> deriv{};
-            if constexpr (TGeoType == GeometryType::LinearBezier2_t)
-            {
-                deriv = m_coreCurve.Derivative();
-            }
-            else
-            {
-                deriv = m_coreCurve.DerivativeAt(m_tangentParam);
-            }
+    //    // --- 3. Отрисовка касательного вектора со стрелочкой ---
+    //    if (m_showTangents)
+    //    {
+    //        auto pt = m_coreCurve.PointAt(m_tangentParam);
 
-            sf::Vector2f startPos(pt.x, pt.y);
-            sf::Vector2f endPos(pt.x + deriv.x * m_tangentScale, pt.y + deriv.y * m_tangentScale);
+    //        Geometry::Vector2<float> deriv{};
+    //        if constexpr (TGeoType == GeometryType::LinearBezier2_t)
+    //        {
+    //            deriv = m_coreCurve.Derivative();
+    //        }
+    //        else
+    //        {
+    //            deriv = m_coreCurve.DerivativeAt(m_tangentParam);
+    //        }
 
-            sf::Vector2f dir = endPos - startPos;
-            float length = std::hypot(dir.x, dir.y);
+    //        sf::Vector2f startPos(pt.x, pt.y);
+    //        sf::Vector2f endPos(pt.x + deriv.x * m_tangentScale, pt.y + deriv.y * m_tangentScale);
 
-            if (length > 0.001f)
-            {
-                sf::Vector2f u = dir / length;
-                sf::Vector2f p(-u.y, u.x);
+    //        sf::Vector2f dir = endPos - startPos;
+    //        float length = std::hypot(dir.x, dir.y);
 
-                constexpr float arrowLength = 10.0f;
-                constexpr float arrowWidth = 5.0f;
+    //        if (length > 0.001f)
+    //        {
+    //            sf::Vector2f u = dir / length;
+    //            sf::Vector2f p(-u.y, u.x);
 
-                sf::Vector2f arrowBase = endPos - u * arrowLength;
-                sf::Vector2f wing1 = arrowBase + p * arrowWidth;
-                sf::Vector2f wing2 = arrowBase - p * arrowWidth;
+    //            constexpr float arrowLength = 10.0f;
+    //            constexpr float arrowWidth = 5.0f;
 
-                sf::VertexArray tangentLine(sf::PrimitiveType::Lines, 6);
+    //            sf::Vector2f arrowBase = endPos - u * arrowLength;
+    //            sf::Vector2f wing1 = arrowBase + p * arrowWidth;
+    //            sf::Vector2f wing2 = arrowBase - p * arrowWidth;
 
-                tangentLine[0] = sf::Vertex(startPos, m_tangentColor);
-                tangentLine[1] = sf::Vertex(endPos, m_tangentColor);
+    //            sf::VertexArray tangentLine(sf::PrimitiveType::Lines, 6);
 
-                tangentLine[2] = sf::Vertex(endPos, m_tangentColor);
-                tangentLine[3] = sf::Vertex(wing1, m_tangentColor);
+    //            tangentLine[0] = sf::Vertex(startPos, m_tangentColor);
+    //            tangentLine[1] = sf::Vertex(endPos, m_tangentColor);
 
-                tangentLine[4] = sf::Vertex(endPos, m_tangentColor);
-                tangentLine[5] = sf::Vertex(wing2, m_tangentColor);
+    //            tangentLine[2] = sf::Vertex(endPos, m_tangentColor);
+    //            tangentLine[3] = sf::Vertex(wing1, m_tangentColor);
 
-                target.draw(tangentLine);
-            }
+    //            tangentLine[4] = sf::Vertex(endPos, m_tangentColor);
+    //            tangentLine[5] = sf::Vertex(wing2, m_tangentColor);
 
-            constexpr float tangentRadius = 3.0f;
-            sf::CircleShape tangentMarker(tangentRadius);
-            tangentMarker.setOrigin(sf::Vector2f(tangentRadius, tangentRadius));
-            tangentMarker.setFillColor(m_tangentColor);
-            tangentMarker.setPosition(startPos);
-            target.draw(tangentMarker);
-        }
-    }
+    //            target.draw(tangentLine);
+    //        }
+
+    //        constexpr float tangentRadius = 3.0f;
+    //        sf::CircleShape tangentMarker(tangentRadius);
+    //        tangentMarker.setOrigin(sf::Vector2f(tangentRadius, tangentRadius));
+    //        tangentMarker.setFillColor(m_tangentColor);
+    //        tangentMarker.setPosition(startPos);
+    //        target.draw(tangentMarker);
+    //    }
+    //}
 
     void Release() noexcept override
     {
@@ -316,7 +320,7 @@ public:
 
     void MoveTo(float mouseDeltaPosX, float mouseDeltaPosY) override
     {
-        const size_t count = GetControlPointCount();
+        constexpr size_t count = GetControlPointCount();
 
         if (m_activeControlPointIndex >= 0 &&
             m_activeControlPointIndex < static_cast<int>(count))
@@ -402,7 +406,7 @@ public:
     float GetControlPointsThickness() const noexcept { return m_controlPointsThickness; }
     void SetControlPointsThickness(float value) noexcept { m_controlPointsThickness = value; }
 
-private:
+public:
     static constexpr size_t GetControlPointCount() noexcept
     {
         if constexpr (TGeoType == GeometryType::LinearBezier2_t) return 2;
@@ -412,47 +416,47 @@ private:
     }
 
 private:
-    void DrawThickLineStrip(sf::RenderTarget& target,
-        const sf::VertexArray& vertices,
-        float thickness,
-        sf::Color color) const
-    {
-        if (vertices.getVertexCount() < 2) return;
+    //void DrawThickLineStrip(sf::RenderTarget& target,
+    //    const sf::VertexArray& vertices,
+    //    float thickness,
+    //    sf::Color color) const
+    //{
+    //    if (vertices.getVertexCount() < 2) return;
 
-        float halfThickness = thickness * 0.5f;
-        sf::VertexArray quads(sf::PrimitiveType::Triangles, (vertices.getVertexCount() - 1) * 6);
-        size_t vertexIdx = 0;
+    //    float halfThickness = thickness * 0.5f;
+    //    sf::VertexArray quads(sf::PrimitiveType::Triangles, (vertices.getVertexCount() - 1) * 6);
+    //    size_t vertexIdx = 0;
 
-        for (size_t i = 0; i < vertices.getVertexCount() - 1; ++i)
-        {
-            sf::Vector2f a = vertices[i].position;
-            sf::Vector2f b = vertices[i + 1].position;
+    //    for (size_t i = 0; i < vertices.getVertexCount() - 1; ++i)
+    //    {
+    //        sf::Vector2f a = vertices[i].position;
+    //        sf::Vector2f b = vertices[i + 1].position;
 
-            sf::Vector2f dir = b - a;
-            float len = std::hypot(dir.x, dir.y);
-            if (len < 0.001f) continue;
+    //        sf::Vector2f dir = b - a;
+    //        float len = std::hypot(dir.x, dir.y);
+    //        if (len < 0.001f) continue;
 
-            // Единичная нормаль к отрезку
-            sf::Vector2f normal(-dir.y / len, dir.x / len);
-            sf::Vector2f offset = normal * halfThickness;
+    //        // Единичная нормаль к отрезку
+    //        sf::Vector2f normal(-dir.y / len, dir.x / len);
+    //        sf::Vector2f offset = normal * halfThickness;
 
-            // 4 вершины прямоугольника
-            sf::Vector2f v0 = a + offset;
-            sf::Vector2f v1 = a - offset;
-            sf::Vector2f v2 = b + offset;
-            sf::Vector2f v3 = b - offset;
+    //        // 4 вершины прямоугольника
+    //        sf::Vector2f v0 = a + offset;
+    //        sf::Vector2f v1 = a - offset;
+    //        sf::Vector2f v2 = b + offset;
+    //        sf::Vector2f v3 = b - offset;
 
-            // Первый треугольник
-            quads[vertexIdx++] = sf::Vertex(v0, color);
-            quads[vertexIdx++] = sf::Vertex(v1, color);
-            quads[vertexIdx++] = sf::Vertex(v2, color);
+    //        // Первый треугольник
+    //        quads[vertexIdx++] = sf::Vertex(v0, color);
+    //        quads[vertexIdx++] = sf::Vertex(v1, color);
+    //        quads[vertexIdx++] = sf::Vertex(v2, color);
 
-            // Второй треугольник
-            quads[vertexIdx++] = sf::Vertex(v2, color);
-            quads[vertexIdx++] = sf::Vertex(v1, color);
-            quads[vertexIdx++] = sf::Vertex(v3, color);
-        }
+    //        // Второй треугольник
+    //        quads[vertexIdx++] = sf::Vertex(v2, color);
+    //        quads[vertexIdx++] = sf::Vertex(v1, color);
+    //        quads[vertexIdx++] = sf::Vertex(v3, color);
+    //    }
 
-        target.draw(quads);
-    }
+    //    target.draw(quads);
+    //}
 };

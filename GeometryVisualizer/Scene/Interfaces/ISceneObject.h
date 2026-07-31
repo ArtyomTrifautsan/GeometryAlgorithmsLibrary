@@ -19,6 +19,4 @@ public:
     virtual GeometryType Type() const = 0;
 
     virtual void Update() = 0;
-
-    virtual void Draw(sf::RenderTarget& target) const = 0;
 };
