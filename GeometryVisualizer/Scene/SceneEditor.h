@@ -29,6 +29,18 @@ public:
         m_context.Update();
     }
 
+    template <typename ObjType, typename... Args>
+    ObjType* CreateAndSelectObject(Args&&... args)
+    {
+        std::unique_ptr<ObjType> obj = std::make_unique<ObjType>(std::forward<Args>(args)...);
+        ObjType* rawObj = obj.get();
+
+        m_context.AddObject(std::move(obj));
+        m_context.SelectObject(rawObj);
+
+        return rawObj;
+    }
+
     SceneContext& GetContext() { return m_context; }
     const SceneContext& GetContext() const { return m_context; }
 

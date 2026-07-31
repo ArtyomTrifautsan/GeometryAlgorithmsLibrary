@@ -10,7 +10,12 @@
 class SceneLinearBezier2 : public SceneBezierCurve<Geometry::LinearBezierCurve2<float>>
 {
 public:
-    using SceneBezierCurve::SceneBezierCurve;
+    SceneLinearBezier2() : SceneBezierCurve(
+        Geometry::LinearBezierCurve2<float>(
+            Geometry::Point2<float>{300.0f, 350.0f},
+            Geometry::Point2<float>{600.0f, 350.0f}
+        )
+    ) {}
 
     void Accept(ISceneObjectVisitor& visitor) override { visitor.Visit(*this); }
 
@@ -26,7 +31,13 @@ public:
 class SceneQuadraticBezier2 : public SceneBezierCurve<Geometry::QuadraticBezierCurve2<float>>
 {
 public:
-    using SceneBezierCurve::SceneBezierCurve;
+    SceneQuadraticBezier2() : SceneBezierCurve(
+        Geometry::QuadraticBezierCurve2<float>(
+            Geometry::Point2<float>{300.0f, 450.0f},
+            Geometry::Point2<float>{450.0f, 200.0f},
+            Geometry::Point2<float>{600.0f, 450.0f}
+        )
+    ) {}
 
     void Accept(ISceneObjectVisitor& visitor) override { visitor.Visit(*this); }
 
@@ -42,7 +53,14 @@ public:
 class SceneCubicBezier2 : public SceneBezierCurve<Geometry::CubicBezierCurve2<float>>
 {
 public:
-    using SceneBezierCurve::SceneBezierCurve;
+    SceneCubicBezier2() : SceneBezierCurve(
+        Geometry::CubicBezierCurve2<float>(
+            Geometry::Point2<float>{300.0f, 450.0f},
+            Geometry::Point2<float>{400.0f, 200.0f},
+            Geometry::Point2<float>{500.0f, 200.0f},
+            Geometry::Point2<float>{600.0f, 450.0f}
+        )
+    ) {}
 
     void Accept(ISceneObjectVisitor& visitor) override { visitor.Visit(*this); }
 

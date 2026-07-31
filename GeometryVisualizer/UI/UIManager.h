@@ -1,21 +1,23 @@
 #pragma once
 
-#include <imgui.h>
-#include <imgui-SFML.h>
-#include <SFML/Graphics.hpp>
 #include <memory>
 #include <cstdint>
 
+#include <imgui.h>
+#include <imgui-SFML.h>
+#include <SFML/Graphics.hpp>
+
+#include <GeometryVisualizer/Scene/SceneEditor.h>
 #include <GeometryVisualizer/Scene/SceneContext.h>
 #include <GeometryVisualizer/Scene/Implements/SceneObjects.h>
 
 class UIManager : public ISceneObjectVisitor
 {
 public:
-    void Render(SceneContext& scene)
+    void Render(SceneEditor& editor)
     {
-        RenderMainMenuBar(scene);
-        RenderPropertiesPanel(scene);
+        RenderMainMenuBar(editor);
+        RenderPropertiesPanel(editor);
     }
 
     void Visit(SceneLinearBezier2& curve) override { DrawCurveProperties(&curve); }
@@ -23,7 +25,7 @@ public:
     void Visit(SceneCubicBezier2& curve) override { DrawCurveProperties(&curve); }
 
 private:
-    void RenderMainMenuBar(SceneContext& scene)
+    void RenderMainMenuBar(SceneEditor& editor)
     {
         if (ImGui::BeginMainMenuBar())
         {
@@ -31,17 +33,17 @@ private:
             {
                 if (ImGui::MenuItem("Linear Bezier Curve"))
                 {
-                    CreateLinearCurve(scene);
+                    editor.CreateAndSelectObject<SceneLinearBezier2>();
                 }
 
                 if (ImGui::MenuItem("Quadratic Bezier Curve"))
                 {
-                    CreateQuadraticCurve(scene);
+                    editor.CreateAndSelectObject<SceneQuadraticBezier2>();
                 }
 
                 if (ImGui::MenuItem("Cubic Bezier Curve"))
                 {
-                    CreateCubicCurve(scene);
+                    editor.CreateAndSelectObject<SceneQuadraticBezier2>();
                 }
 
                 ImGui::EndMenu();
@@ -90,11 +92,11 @@ private:
         scene.SelectObject(rawPtr);
     }
 
-    void RenderPropertiesPanel(SceneContext& scene)
+    void RenderPropertiesPanel(SceneEditor& editor)
     {
         ImGui::Begin("Inspector / Properties");
 
-        ISceneObject* selected = scene.GetSelectedObject();
+        ISceneObject* selected = editor.GetContext().GetSelectedObject();
 
         if (!selected) {
             ImGui::TextColored(ImVec4(0.7f, 0.7f, 0.7f, 1.0f), "No object selected.");

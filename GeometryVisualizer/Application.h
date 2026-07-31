@@ -79,7 +79,7 @@ private:
         m_sceneRenderer.Render(m_editor.GetContext(), m_window);
 
         m_window.setView(m_window.getDefaultView());
-        m_ui.Render(m_window, m_editor.GetContext());
+        m_ui.Render(m_window, m_editor);
         
         m_window.display();
     }

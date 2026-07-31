@@ -8,7 +8,9 @@
 #include <imgui.h>
 #include <imgui-SFML.h>
 
-#include "UIManager.h" // Ваш класс с логикой отрисовки панелей свойств
+#include <GeometryVisualizer/UI/UIManager.h>
+#include <GeometryVisualizer/Scene/SceneEditor.h>
+#include <GeometryVisualizer/Scene/Implements/SceneObjects.h>
 
 class ImguiUI
 {
@@ -35,10 +37,10 @@ public:
     }
 
     // Отрисовка интерфейса (вызывать между window.clear() и window.display())
-    void Render(sf::RenderWindow& window, SceneContext& scene)
+    void Render(sf::RenderWindow& window, SceneEditor& editor)
     {
         // 1. Формируем логику наших окон (свойства выделенного объекта)
-        m_uiManager.Render(scene);
+        m_uiManager.Render(editor);
 
         // 2. Отрисовываем буфер ImGui поверх окна SFML
         ImGui::SFML::Render(window);
