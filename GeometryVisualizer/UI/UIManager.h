@@ -9,20 +9,20 @@
 #include <GeometryVisualizer/Scene/SceneContext.h>
 #include <GeometryVisualizer/Scene/Implements/SceneObjects.h>
 
-class UIManager
+class UIManager : public ISceneObjectVisitor
 {
 public:
     void Render(SceneContext& scene)
     {
-        // 1. Отрисовываем верхнее меню окна (Main Menu Bar)
         RenderMainMenuBar(scene);
-
-        // 2. Окно свойств выделенного объекта (Inspector)
         RenderPropertiesPanel(scene);
     }
 
+    void Visit(SceneLinearBezier2& curve) override { DrawCurveProperties(&curve); }
+    void Visit(SceneQuadraticBezier2& curve) override { DrawCurveProperties(&curve); }
+    void Visit(SceneCubicBezier2& curve) override { DrawCurveProperties(&curve); }
+
 private:
-    // --- Верхняя панель меню ---
     void RenderMainMenuBar(SceneContext& scene)
     {
         if (ImGui::BeginMainMenuBar())
@@ -51,17 +51,13 @@ private:
         }
     }
 
-    // --- Фабричные методы создания объектов ---
-
     void CreateLinearCurve(SceneContext& scene)
     {
         auto curve = std::make_unique<SceneLinearBezier2>();
 
-        // Задаем стартовые координаты (например, по центру экрана)
         curve->SetControlPoint(0, { 300.0f, 350.0f });
         curve->SetControlPoint(1, { 600.0f, 350.0f });
 
-        // Добавляем в сцену и сразу выделяем
         ISceneObject* rawPtr = curve.get();
         scene.AddObject(std::move(curve));
         scene.SelectObject(rawPtr);
@@ -94,7 +90,6 @@ private:
         scene.SelectObject(rawPtr);
     }
 
-    // --- Панель инспектора свойств ---
     void RenderPropertiesPanel(SceneContext& scene)
     {
         ImGui::Begin("Inspector / Properties");
@@ -111,23 +106,13 @@ private:
         ImGui::Text("Type: %s", selected->Name().c_str());
         ImGui::Separator();
 
-        // RTTI каст к соответствующим типам кривых
-        if (auto cubic = dynamic_cast<SceneCubicBezier2*>(selected)) {
-            DrawCurveProperties(cubic);
-        }
-        else if (auto quad = dynamic_cast<SceneQuadraticBezier2*>(selected)) {
-            DrawCurveProperties(quad);
-        }
-        else if (auto linear = dynamic_cast<SceneLinearBezier2*>(selected)) {
-            DrawCurveProperties(linear);
-        }
+        selected->Accept(*this);
 
         ImGui::End();
     }
 
-    // --- Отображение свойств конкретной кривой ---
-    template <typename TCore, GeometryType TType>
-    void DrawCurveProperties(SceneBezierCurve<TCore, TType>* curve)
+    template <typename TCore>
+    void DrawCurveProperties(SceneBezierCurve<TCore>* curve)
     {
         int segments = curve->GetSegments();
         if (ImGui::SliderInt("Segments", &segments, 2, 200)) {
@@ -148,39 +133,45 @@ private:
 
         ImGui::Spacing();
 
-        if (showTang) {
+        if (showTang)
+        {
             float tParam = curve->GetTangentParam();
-            if (ImGui::SliderFloat("Tangent Param (t)", &tParam, 0.0f, 1.0f)) {
+            if (ImGui::SliderFloat("Tangent parametr (t)", &tParam, 0.0f, 1.0f)) {
                 curve->SetTangentParam(tParam);
             }
 
             float tScale = curve->GetTangentScale();
-            if (ImGui::SliderFloat("Tangent Scale", &tScale, 0.01f, 2.0f)) {
+            if (ImGui::SliderFloat("Tangent scale", &tScale, 0.01f, 2.0f)) {
                 curve->SetTangentScale(tScale);
             }
             ImGui::Spacing();
         }
 
-        // Цветовая палитра
-        DrawColorEdit("Curve Color", curve,
+        DrawColorEdit("Curve color", curve,
             [](auto* c) { return c->GetCurveColor(); },
             [](auto* c, sf::Color col) { c->SetCurveColor(col); }
         );
 
-        DrawColorEdit("Skeleton Color", curve,
-            [](auto* c) { return c->GetSkeletonColor(); },
-            [](auto* c, sf::Color col) { c->SetSkeletonColor(col); }
-        );
+        if (showSkel)
+        {
+            DrawColorEdit("Skeleton color", curve,
+                [](auto* c) { return c->GetSkeletonColor(); },
+                [](auto* c, sf::Color col) { c->SetSkeletonColor(col); }
+            );
 
-        DrawColorEdit("Control Points Color", curve,
-            [](auto* c) { return c->GetControlPointsColor(); },
-            [](auto* c, sf::Color col) { c->SetControlPointsColor(col); }
-        );
+            DrawColorEdit("Control points color", curve,
+                [](auto* c) { return c->GetControlPointsColor(); },
+                [](auto* c, sf::Color col) { c->SetControlPointsColor(col); }
+            );
+        }
 
-        DrawColorEdit("Tangent Color", curve,
-            [](auto* c) { return c->GetTangentColor(); },
-            [](auto* c, sf::Color col) { c->SetTangentColor(col); }
-        );
+        if (showTang)
+        {
+            DrawColorEdit("Tangent color", curve,
+                [](auto* c) { return c->GetTangentColor(); },
+                [](auto* c, sf::Color col) { c->SetTangentColor(col); }
+            );
+        }
     }
 
     template <typename TCurve, typename Getter, typename Setter>

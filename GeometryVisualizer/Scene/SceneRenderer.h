@@ -28,19 +28,22 @@ public:
         m_currentTarget = nullptr;
     }
 
-    void Visit(const SceneLinearBezier2& curve) override {
+    void Visit(SceneLinearBezier2& curve) override
+    {
         if (m_currentTarget) RenderCurve(&curve, *m_currentTarget);
     }
-    void Visit(const SceneQuadraticBezier2& curve) override {
+    void Visit(SceneQuadraticBezier2& curve) override
+    {
         if (m_currentTarget) RenderCurve(&curve, *m_currentTarget);
     }
-    void Visit(const SceneCubicBezier2& curve) override {
+    void Visit(SceneCubicBezier2& curve) override
+    {
         if (m_currentTarget) RenderCurve(&curve, *m_currentTarget);
     }
 
 private:
-    template <typename TCore, GeometryType TType>
-    void RenderCurve(const SceneBezierCurve<TCore, TType>* curve, sf::RenderTarget& target)
+    template <typename TCore>
+    void RenderCurve(const SceneBezierCurve<TCore>* curve, sf::RenderTarget& target)
     {
         const bool isInteracted = (curve->State() == InteractedState::Selected ||
             curve->State() == InteractedState::Dragged);
@@ -64,7 +67,7 @@ private:
         if (curve->GetShowSkeleton())
         {
             // Skeleton
-            constexpr size_t pointCount = curve->GetControlPointCount();
+            const size_t pointCount = curve->GetControlPointCount();
 
             sf::VertexArray skeleton(sf::PrimitiveType::LineStrip, pointCount);
             for (size_t i = 0; i < pointCount; ++i)
@@ -104,47 +107,30 @@ private:
             float t = curve->GetTangentParam();
             const auto& coreCurve = curve->GetCoreCurve();
 
-            // Получаем точку на кривой
             auto pt = coreCurve.PointAt(t);
             sf::Vector2f startPos(pt.x, pt.y);
 
-            // Получаем вектор производной (из твоего ядра)
-            Geometry::Vector2<float> deriv{};
-            if constexpr (TType == GeometryType::LinearBezier2_t) {
-                deriv = coreCurve.Derivative();
-            }
-            else {
-                deriv = coreCurve.DerivativeAt(t);
-            }
+            Geometry::Vector2<float> deriv = curve->GetDerivativeAt(t);
 
-            // ТВОЯ МАТЕМАТИКА В ДЕЛЕ:
-            // Безопасная проверка на нулевой вектор через твой EPSILON
             if (!deriv.Zero())
             {
-                // 1. Нормализуем вектор (он меняет свое состояние и становится единичным)
                 deriv.Normalize();
 
-                // 2. Рассчитываем фиксированную длину
                 float fixedLength = 60.0f * curve->GetTangentScale();
 
-                // 3. Масштабируем вектор через твою перегрузку operator*
                 Geometry::Vector2<float> scaledDeriv = deriv * fixedLength;
 
-                // 4. Вычисляем конец линии
                 sf::Vector2f endPos = startPos + sf::Vector2f(scaledDeriv.x, scaledDeriv.y);
 
                 sf::Color tColor = curve->GetTangentColor();
                 sf::VertexArray tangentLine(sf::PrimitiveType::Lines, 6);
 
-                // Основная линия вектора
                 tangentLine[0] = sf::Vertex(startPos, tColor);
                 tangentLine[1] = sf::Vertex(endPos, tColor);
 
-                // Отрисовка наконечника стрелочки
                 constexpr float arrowLength = 12.0f;
                 constexpr float arrowWidth = 5.0f;
 
-                // Для нормали (перпендикуляра) и смещения берем уже нормализованный deriv
                 sf::Vector2f dir(deriv.x, deriv.y);
                 sf::Vector2f p(-deriv.y, deriv.x);
 
@@ -160,7 +146,6 @@ private:
                 target.draw(tangentLine);
             }
 
-            // Круглая точка-маркер на самой кривой в позиции t
             constexpr float tangentRadius = 4.0f;
             sf::CircleShape tangentMarker(tangentRadius);
             tangentMarker.setOrigin(sf::Vector2f(tangentRadius, tangentRadius));

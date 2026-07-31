@@ -7,7 +7,8 @@ enum class InteractedState
     Dragged
 };
 
-class IInteractable {
+class IInteractable
+{
 public:
     virtual ~IInteractable() = default;
 

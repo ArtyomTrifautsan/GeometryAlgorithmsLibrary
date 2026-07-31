@@ -1,5 +1,6 @@
 #pragma once
 
+#include <limits>
 #include <SFML/Graphics.hpp>
 
 #include <GeometryVisualizer/Scene/Interfaces/ISceneObject.h>
@@ -10,8 +11,7 @@
 #include <GeometryCore/BoundingVolumes/AABB2.h>    
 #include <GeometryCore/Math/Utils.h>
 
-
-template <typename TCoreCurve, GeometryType TGeoType>
+template <typename TCoreCurve>
 class SceneBezierCurve : public ISceneObject, public IInteractable
 {
 private:
@@ -35,22 +35,15 @@ private:
 
 public:
     template<typename... Args>
-    SceneBezierCurve(Args&&... args) : m_coreCurve(std::forward<Args>(args)...)
+    explicit SceneBezierCurve(Args&&... args) : m_coreCurve(std::forward<Args>(args)...)
     {
         Update();
     }
 
     ~SceneBezierCurve() override = default;
 
-    std::string Name() const override
-    {
-        if constexpr (TGeoType == GeometryType::CubicBezier2_t) return "Cubic Bezier";
-        if constexpr (TGeoType == GeometryType::QuadraticBezier2_t) return "Quadratic Bezier";
-        if constexpr (TGeoType == GeometryType::LinearBezier2_t) return "Linear Bezier";
-        return "Unknown Bezier";
-    }
-
-    GeometryType Type() const override { return TGeoType; }
+    virtual size_t GetControlPointCount() const = 0;
+    virtual Geometry::Vector2<float> GetDerivativeAt(float t) const = 0;
 
     void Update() override
     {
@@ -82,152 +75,17 @@ public:
         };
     }
 
-    //void Draw(sf::RenderTarget& target) const override
-    //{
-    //    //auto p = GetControlPoint(0);
-    //    //std::cout << "Drawing! Point 0: (" << p.x << ", " << p.y
-    //    //    << ") | Vertices: " << m_drawVertices.getVertexCount() << "\n";
-
-    //    // Определяем, взаимодействует ли пользователь с объектом
-    //    const bool isInteracted = (State() == InteractedState::Selected || State() == InteractedState::Dragged);
-
-    //    // --- 1. Отрисовка сама кривая ---
-    //    if (isInteracted)
-    //    {
-    //        // При выделении/перетаскивании рисуем подложку-свечение и утолщенную линию
-    //        DrawThickLineStrip(target, m_drawVertices, 6.0f, sf::Color(255, 255, 255, 90)); // Мягкий полупрозрачный контур
-    //        DrawThickLineStrip(target, m_drawVertices, 3.5f, m_curveColor);                  // Основная утолщенная линия
-    //    }
-    //    else
-    //    {
-    //        // Обычная тонкая кривая в 1px
-    //        target.draw(m_drawVertices);
-    //    }
-
-    //    // --- 2. Отрисовка скелета и опорных точек ---
-    //    if (m_showSkeleton)
-    //    {
-    //        constexpr size_t pointCount = GetControlPointCount();
-
-    //        // 2.1 Ломаная скелета
-    //        sf::VertexArray skeleton(sf::PrimitiveType::LineStrip, pointCount);
-    //        for (size_t i = 0; i < pointCount; ++i)
-    //        {
-    //            auto pt = GetControlPoint(i);
-    //            skeleton[i] = sf::Vertex(sf::Vector2f(pt.x, pt.y), m_skeletonColor);
-    //        }
-
-    //        if (isInteracted) {
-    //            DrawThickLineStrip(target, skeleton, 2.0f, m_skeletonColor);
-    //        }
-    //        else {
-    //            target.draw(skeleton);
-    //        }
-
-    //        // 2.2. Контрольные точки
-    //        float pointRadius = isInteracted ? 7.5f : 4.5f;
-    //        float outlineThickness = isInteracted ? 2.5f : 1.5f;
-
-    //        sf::CircleShape pointMarker(pointRadius);
-    //        pointMarker.setOrigin(sf::Vector2f(pointRadius, pointRadius));
-    //        pointMarker.setFillColor(isInteracted ? sf::Color(255, 220, 50) : m_controlPointsColor);
-    //        pointMarker.setOutlineThickness(outlineThickness);
-    //        pointMarker.setOutlineColor(isInteracted ? sf::Color::White : sf::Color(20, 20, 22));
-
-    //        for (size_t i = 0; i < pointCount; ++i)
-    //        {
-    //            auto pt = GetControlPoint(i);
-    //            pointMarker.setPosition(sf::Vector2f(pt.x, pt.y));
-
-    //            // Подсвечиваем перетаскиваемую точку
-    //            if (isInteracted && static_cast<int>(i) == m_activeControlPointIndex)
-    //            {
-    //                pointMarker.setRadius(9.5f);
-    //                pointMarker.setOrigin(sf::Vector2f(9.5f, 9.5f));
-    //                pointMarker.setFillColor(sf::Color(255, 90, 40)); // Ярко-оранжевый
-    //                pointMarker.setOutlineColor(sf::Color::White);
-
-    //                target.draw(pointMarker);
-
-    //                // Возвращаем дефолтные параметры маркеру
-    //                pointMarker.setRadius(pointRadius);
-    //                pointMarker.setOrigin(sf::Vector2f(pointRadius, pointRadius));
-    //                pointMarker.setFillColor(sf::Color(255, 220, 50));
-    //            }
-    //            else
-    //            {
-    //                target.draw(pointMarker);
-    //            }
-    //        }
-    //    }
-
-    //    // --- 3. Отрисовка касательного вектора со стрелочкой ---
-    //    if (m_showTangents)
-    //    {
-    //        auto pt = m_coreCurve.PointAt(m_tangentParam);
-
-    //        Geometry::Vector2<float> deriv{};
-    //        if constexpr (TGeoType == GeometryType::LinearBezier2_t)
-    //        {
-    //            deriv = m_coreCurve.Derivative();
-    //        }
-    //        else
-    //        {
-    //            deriv = m_coreCurve.DerivativeAt(m_tangentParam);
-    //        }
-
-    //        sf::Vector2f startPos(pt.x, pt.y);
-    //        sf::Vector2f endPos(pt.x + deriv.x * m_tangentScale, pt.y + deriv.y * m_tangentScale);
-
-    //        sf::Vector2f dir = endPos - startPos;
-    //        float length = std::hypot(dir.x, dir.y);
-
-    //        if (length > 0.001f)
-    //        {
-    //            sf::Vector2f u = dir / length;
-    //            sf::Vector2f p(-u.y, u.x);
-
-    //            constexpr float arrowLength = 10.0f;
-    //            constexpr float arrowWidth = 5.0f;
-
-    //            sf::Vector2f arrowBase = endPos - u * arrowLength;
-    //            sf::Vector2f wing1 = arrowBase + p * arrowWidth;
-    //            sf::Vector2f wing2 = arrowBase - p * arrowWidth;
-
-    //            sf::VertexArray tangentLine(sf::PrimitiveType::Lines, 6);
-
-    //            tangentLine[0] = sf::Vertex(startPos, m_tangentColor);
-    //            tangentLine[1] = sf::Vertex(endPos, m_tangentColor);
-
-    //            tangentLine[2] = sf::Vertex(endPos, m_tangentColor);
-    //            tangentLine[3] = sf::Vertex(wing1, m_tangentColor);
-
-    //            tangentLine[4] = sf::Vertex(endPos, m_tangentColor);
-    //            tangentLine[5] = sf::Vertex(wing2, m_tangentColor);
-
-    //            target.draw(tangentLine);
-    //        }
-
-    //        constexpr float tangentRadius = 3.0f;
-    //        sf::CircleShape tangentMarker(tangentRadius);
-    //        tangentMarker.setOrigin(sf::Vector2f(tangentRadius, tangentRadius));
-    //        tangentMarker.setFillColor(m_tangentColor);
-    //        tangentMarker.setPosition(startPos);
-    //        target.draw(tangentMarker);
-    //    }
-    //}
-
     void Release() noexcept override
     {
         IInteractable::Release();
-        m_activeControlPointIndex = -1; // Сбрасываем выбор точки
+        m_activeControlPointIndex = -1;
     }
 
     bool HitTest(float mousePosX, float mousePosY, float distanceThreshold) override
     {
         Geometry::Point2<float> mousePoint{ mousePosX, mousePosY };
 
-        constexpr size_t count = GetControlPointCount();
+        const size_t count = GetControlPointCount();
         constexpr float pointHitRadiusSq = 12.0f * 12.0f;
 
         for (size_t i = 0; i < count; ++i)
@@ -272,55 +130,9 @@ public:
         return false;
     }
 
-    //bool HitTest(float mousePosX, float mousePosY, float distanceThreshold) override
-    //{
-    //    Geometry::Point2<float> mousePoint{ mousePosX, mousePosY };
-
-    //    // 1. Печатаем клик и границы кривой
-    //    std::cout << "[HitTest] Mouse: (" << mousePosX << ", " << mousePosY << ")"
-    //        << " | AABB min: (" << m_bounds.min.x << ", " << m_bounds.min.y << ")"
-    //        << " max: (" << m_bounds.max.x << ", " << m_bounds.max.y << ")\n";
-
-    //    Geometry::AABB2<float> expandedBounds{
-    //        Geometry::Point2<float>{m_bounds.min.x - distanceThreshold, m_bounds.min.y - distanceThreshold},
-    //        Geometry::Point2<float>{m_bounds.max.x + distanceThreshold, m_bounds.max.y + distanceThreshold}
-    //    };
-
-    //    if (!expandedBounds.Contains(mousePoint))
-    //    {
-    //        std::cout << "  -> Failed AABB check!\n";
-    //        return false;
-    //    }
-
-    //    // 2. Проверка точного расстояния
-    //    float minDistanceFound = std::numeric_limits<float>::max();
-
-    //    for (size_t i = 0; i < m_segments; ++i)
-    //    {
-    //        Geometry::Segment2<float> seg{
-    //            Geometry::Point2<float>{m_drawVertices[i].position.x, m_drawVertices[i].position.y},
-    //            Geometry::Point2<float>{m_drawVertices[i + 1].position.x, m_drawVertices[i + 1].position.y}
-    //        };
-
-    //        auto distInfo = Geometry::Distance(mousePoint, seg);
-    //        if (distInfo.distance < minDistanceFound) {
-    //            minDistanceFound = distInfo.distance;
-    //        }
-
-    //        if (Geometry::IsLessOrEqual(distInfo.distance, distanceThreshold))
-    //        {
-    //            std::cout << "  -> SUCCESS! Distance: " << distInfo.distance << "\n";
-    //            return true;
-    //        }
-    //    }
-
-    //    std::cout << "  -> Failed segment distance check. Closest segment was: " << minDistanceFound << " px away (threshold was " << distanceThreshold << ")\n";
-    //    return false;
-    //}
-
     void MoveTo(float mouseDeltaPosX, float mouseDeltaPosY) override
     {
-        constexpr size_t count = GetControlPointCount();
+        const size_t count = GetControlPointCount();
 
         if (m_activeControlPointIndex >= 0 &&
             m_activeControlPointIndex < static_cast<int>(count))
@@ -405,58 +217,4 @@ public:
 
     float GetControlPointsThickness() const noexcept { return m_controlPointsThickness; }
     void SetControlPointsThickness(float value) noexcept { m_controlPointsThickness = value; }
-
-public:
-    static constexpr size_t GetControlPointCount() noexcept
-    {
-        if constexpr (TGeoType == GeometryType::LinearBezier2_t) return 2;
-        else if constexpr (TGeoType == GeometryType::QuadraticBezier2_t) return 3;
-        else if constexpr (TGeoType == GeometryType::CubicBezier2_t) return 4;
-        return 0;
-    }
-
-private:
-    //void DrawThickLineStrip(sf::RenderTarget& target,
-    //    const sf::VertexArray& vertices,
-    //    float thickness,
-    //    sf::Color color) const
-    //{
-    //    if (vertices.getVertexCount() < 2) return;
-
-    //    float halfThickness = thickness * 0.5f;
-    //    sf::VertexArray quads(sf::PrimitiveType::Triangles, (vertices.getVertexCount() - 1) * 6);
-    //    size_t vertexIdx = 0;
-
-    //    for (size_t i = 0; i < vertices.getVertexCount() - 1; ++i)
-    //    {
-    //        sf::Vector2f a = vertices[i].position;
-    //        sf::Vector2f b = vertices[i + 1].position;
-
-    //        sf::Vector2f dir = b - a;
-    //        float len = std::hypot(dir.x, dir.y);
-    //        if (len < 0.001f) continue;
-
-    //        // Единичная нормаль к отрезку
-    //        sf::Vector2f normal(-dir.y / len, dir.x / len);
-    //        sf::Vector2f offset = normal * halfThickness;
-
-    //        // 4 вершины прямоугольника
-    //        sf::Vector2f v0 = a + offset;
-    //        sf::Vector2f v1 = a - offset;
-    //        sf::Vector2f v2 = b + offset;
-    //        sf::Vector2f v3 = b - offset;
-
-    //        // Первый треугольник
-    //        quads[vertexIdx++] = sf::Vertex(v0, color);
-    //        quads[vertexIdx++] = sf::Vertex(v1, color);
-    //        quads[vertexIdx++] = sf::Vertex(v2, color);
-
-    //        // Второй треугольник
-    //        quads[vertexIdx++] = sf::Vertex(v2, color);
-    //        quads[vertexIdx++] = sf::Vertex(v1, color);
-    //        quads[vertexIdx++] = sf::Vertex(v3, color);
-    //    }
-
-    //    target.draw(quads);
-    //}
 };
