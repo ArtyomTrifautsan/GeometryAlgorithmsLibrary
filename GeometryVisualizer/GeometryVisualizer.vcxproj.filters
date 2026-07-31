@@ -107,5 +107,8 @@
     <ClInclude Include="Scene\SceneRenderer.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
+    <ClInclude Include="Scene\Interfaces\ISceneObjectVisitor.h">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

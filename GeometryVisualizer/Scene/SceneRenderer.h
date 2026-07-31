@@ -7,28 +7,35 @@
 #include <GeometryVisualizer/Scene/SceneContext.h>
 #include <GeometryVisualizer/Scene/Implements/SceneObjects.h>
 
-class SceneRenderer
+class SceneRenderer : public ISceneObjectVisitor
 {
+private:
+    sf::RenderTarget* m_currentTarget = nullptr;
+
 public:
     void Render(const SceneContext& context, sf::RenderTarget& target)
     {
         target.setView(target.getDefaultView());
+        m_currentTarget = &target;
 
         for (const auto& objPtr : context.GetObjects())
         {
-            const ISceneObject* obj = objPtr.get();
-            if (!obj) continue;
-
-            if (auto cubic = dynamic_cast<const SceneCubicBezier2*>(obj)) {
-                RenderCurve(cubic, target);
-            }
-            else if (auto quad = dynamic_cast<const SceneQuadraticBezier2*>(obj)) {
-                RenderCurve(quad, target);
-            }
-            else if (auto linear = dynamic_cast<const SceneLinearBezier2*>(obj)) {
-                RenderCurve(linear, target);
+            if (objPtr) {
+                objPtr->Accept(*this);
             }
         }
+
+        m_currentTarget = nullptr;
+    }
+
+    void Visit(const SceneLinearBezier2& curve) override {
+        if (m_currentTarget) RenderCurve(&curve, *m_currentTarget);
+    }
+    void Visit(const SceneQuadraticBezier2& curve) override {
+        if (m_currentTarget) RenderCurve(&curve, *m_currentTarget);
+    }
+    void Visit(const SceneCubicBezier2& curve) override {
+        if (m_currentTarget) RenderCurve(&curve, *m_currentTarget);
     }
 
 private:

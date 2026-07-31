@@ -179,6 +179,7 @@ $(ProjectDir)external\imgui-sfml;%(AdditionalIncludeDirectories);$(SolutionDir)<
     <ClInclude Include="Scene\Implements\SceneObjects.h" />
     <ClInclude Include="Scene\Interfaces\IInteractable.h" />
     <ClInclude Include="Scene\Interfaces\ISceneObject.h" />
+    <ClInclude Include="Scene\Interfaces\ISceneObjectVisitor.h" />
     <ClInclude Include="Scene\SceneContext.h" />
     <ClInclude Include="Scene\SceneEditor.h" />
     <ClInclude Include="Scene\SceneRenderer.h" />

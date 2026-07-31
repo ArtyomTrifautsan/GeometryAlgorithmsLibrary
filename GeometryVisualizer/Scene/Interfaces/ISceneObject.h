@@ -4,6 +4,8 @@
 #include <GeometryCore/Primitives/Point2.h>
 #include <string>
 
+class ISceneObjectVisitor;
+
 enum class GeometryType
 {
     LinearBezier2_t,
@@ -19,4 +21,6 @@ public:
     virtual GeometryType Type() const = 0;
 
     virtual void Update() = 0;
+
+    virtual void Accept(ISceneObjectVisitor& visitor) const = 0;
 };
