@@ -43,7 +43,7 @@ private:
 
                 if (ImGui::MenuItem("Cubic Bezier Curve"))
                 {
-                    editor.CreateAndSelectObject<SceneQuadraticBezier2>();
+                    editor.CreateAndSelectObject<SceneCubicBezier2>();
                 }
 
                 ImGui::EndMenu();
