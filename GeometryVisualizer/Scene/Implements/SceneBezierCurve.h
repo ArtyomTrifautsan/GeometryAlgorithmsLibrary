@@ -81,9 +81,9 @@ public:
         m_activeControlPointIndex = -1;
     }
 
-    bool HitTest(float mousePosX, float mousePosY, float distanceThreshold) override
+    bool HitTest(const HitTestContext& ctx) override
     {
-        Geometry::Point2<float> mousePoint{ mousePosX, mousePosY };
+        Geometry::Point2<float> mousePoint = ctx.worldPoint2D;
 
         const size_t count = GetControlPointCount();
         constexpr float pointHitRadiusSq = 12.0f * 12.0f;
@@ -104,8 +104,8 @@ public:
         m_activeControlPointIndex = -1;
 
         Geometry::AABB2<float> expandedBounds{
-            Geometry::Point2<float>{m_bounds.min.x - distanceThreshold, m_bounds.min.y - distanceThreshold},
-            Geometry::Point2<float>{m_bounds.max.x + distanceThreshold, m_bounds.max.y + distanceThreshold}
+            Geometry::Point2<float>{m_bounds.min.x - ctx.distanceThreshold, m_bounds.min.y - ctx.distanceThreshold},
+            Geometry::Point2<float>{m_bounds.max.x + ctx.distanceThreshold, m_bounds.max.y + ctx.distanceThreshold}
         };
 
         if (!expandedBounds.Contains(mousePoint))
@@ -121,7 +121,7 @@ public:
             };
             Geometry::PointSegmentDistance2<float> pointSegmentDistanceInfo = Geometry::Distance(mousePoint, seg);
 
-            if (Geometry::IsLessOrEqual(pointSegmentDistanceInfo.distance, distanceThreshold))
+            if (Geometry::IsLessOrEqual(pointSegmentDistanceInfo.distance, ctx.distanceThreshold))
             {
                 return true;
             }
@@ -130,22 +130,22 @@ public:
         return false;
     }
 
-    void MoveTo(float mouseDeltaPosX, float mouseDeltaPosY) override
+    void Move(const DragContext& ctx) override
     {
         const size_t count = GetControlPointCount();
 
         if (m_activeControlPointIndex >= 0 &&
             m_activeControlPointIndex < static_cast<int>(count))
         {
-            m_coreCurve[m_activeControlPointIndex].x += mouseDeltaPosX;
-            m_coreCurve[m_activeControlPointIndex].y += mouseDeltaPosY;
+            m_coreCurve[m_activeControlPointIndex].x += ctx.worldDelta2D.x;
+            m_coreCurve[m_activeControlPointIndex].y += ctx.worldDelta2D.y;
         }
         else
         {
             for (size_t i = 0; i < count; ++i)
             {
-                m_coreCurve[i].x += mouseDeltaPosX;
-                m_coreCurve[i].y += mouseDeltaPosY;
+                m_coreCurve[i].x += ctx.worldDelta2D.x;
+                m_coreCurve[i].y += ctx.worldDelta2D.y;
             }
         }
 

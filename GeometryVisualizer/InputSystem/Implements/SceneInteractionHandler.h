@@ -25,7 +25,11 @@ public:
             {
                 sf::Vector2f worldPos = window.mapPixelToCoords(mousePressed->position);
 
-                m_scene.SelectObjectAt(worldPos.x, worldPos.y, 15.0f);
+                HitTestContext ctx{};
+                ctx.worldPoint2D.x = worldPos.x;
+                ctx.worldPoint2D.y = worldPos.y;
+                ctx.distanceThreshold = 15.0f;
+                m_scene.SelectObjectAt(ctx);
                 ISceneObject* selected = m_scene.GetSelectedObject();
 
                 m_isDragging = (selected != nullptr);
@@ -50,7 +54,12 @@ public:
                     if (delta.x != 0.0f || delta.y != 0.0f)
                     {
                         interactable->Drag();
-                        interactable->MoveTo(delta.x, delta.y);
+
+                        DragContext ctx{};
+                        ctx.worldDelta2D.x = delta.x;
+                        ctx.worldDelta2D.y = delta.y;
+                        interactable->Move(ctx);
+
                         m_lastMouseWorldPos = currentWorldPos;
                     }
 

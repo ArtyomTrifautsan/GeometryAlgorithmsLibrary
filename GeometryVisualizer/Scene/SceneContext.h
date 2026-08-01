@@ -60,11 +60,11 @@ public:
         }
     }
 
-    ISceneObject* FindObjectAt(float x, float y, float threshold = 5.0f) const
+    ISceneObject* FindObjectAt(const HitTestContext& ctx) const
     {
         for (auto it = m_objects.rbegin(); it != m_objects.rend(); ++it) {
             if (auto interactable = dynamic_cast<IInteractable*>(it->get())) {
-                if (interactable->HitTest(x, y, threshold)) {
+                if (interactable->HitTest(ctx)) {
                     return it->get();
                 }
             }
@@ -72,9 +72,9 @@ public:
         return nullptr;
     }
 
-    void SelectObjectAt(float x, float y, float threshold = 5.0f)
+    void SelectObjectAt(const HitTestContext& ctx)
     {
-        SelectObject(FindObjectAt(x, y, threshold));
+        SelectObject(FindObjectAt(ctx));
     }
 
     void ClearSelection()
