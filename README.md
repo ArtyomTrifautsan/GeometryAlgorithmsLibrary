@@ -3,27 +3,20 @@
 ![C++20](https://img.shields.io/badge/language-C++20-blue.svg)
 ![Google Test](https://img.shields.io/badge/testing-GoogleTest-red.svg)
 
-Данный репозиторий содержит реализацию геометрических алгоритмов в 2D и 3D, а также кривых Безье.
+Данный репозиторий содержит реализацию [геометрических алгоритмов в 2D и 3D](./GeometryCore/Algorithms/), а также [кривых Безье](./GeometryCore/Curves/).
 
 ### Реализованные геометрические алгоритмы в 2D:
 1. [Взаимное расположение точки и замкнутого многоугольника](./GeometryCore/Algorithms/PointPolygonLocation2.h) (проверка нахождения точки внутри многоугольника).
-2. [Расстояние между двумя отрезками].
-3. [Расстояние от точки до отрезка].
-4. [Расстояние от точки до точки].
-5. [Пересечение двух линий].
-6. [Пересечение двух отрезков].
-7. [Пересечение луча и отрезка].
+2. [Расстояние от точки до отрезка](./GeometryCore/Algorithms/PointSegmentDistance2.h).
+3. [Расстояние от точки до точки](./GeometryCore/Algorithms/PointPointDistance2.h).
+4. [Пересечение двух линий](./GeometryCore/Algorithms/LineLineIntersection2.h).
+5. [Пересечение двух отрезков](./GeometryCore/Algorithms/SegmentSegmentIntersection2.h).
+6. [Пересечение луча и отрезка](./GeometryCore/Algorithms/RaySegmentIntersection2.h).
 
 ### Реализованные геометрические алгоритмы в 3D:
-1. [Пересечение луча и треугольника].
-2. [Расстояние между двумя отрезками].
-3. [Пересечение отрезка с плоскостью].
-4. [Расстояние от точки до отрезка].
-5. [Расстояние от точки до точки].
+1. [Пересечение луча и треугольника](./GeometryCore/Algorithms/RayTriangleIntersection3.h).
+2. [Расстояние между двумя отрезками](./GeometryCore/Algorithms/SegmentSegmentDistance3.h).
+3. [Пересечение отрезка с плоскостью](./GeometryCore/Algorithms/SegmentPlaneIntersection3.h).
+4. [Расстояние от точки до отрезка](./GeometryCore/Algorithms/PointSegmentDistance3.h).
+5. [Расстояние от точки до точки](./GeometryCore/Algorithms/PointPointDistance3.h).
 
-1.  [**Binary Serialization**](./task-1-serialize): Реализация бинарной сериализации/десериализации структур данных STL и пользовательских типов с использованием Concepts и SFINAE.
-2.  [**Filter Iterator**](./task-2-filter-iterator): Механизм ленивого прохода по элементам контейнеров (filter iterator), работающий с любыми `ForwardIterator`, удовлетворяющий STL.
-3.  [**Trie (Префиксное дерево)**](./task-3-prefix-tree): Реализация структуры данных Trie с поддержкой итераторов и поддеревьев (SubTrie).
-4.  [**Shared Pointer**](./task-4-custom-shared-pointer): Реализация собственного `SharedPTR` с поддержкой управления памятью и кастомных делетеров.
-5.  [**Cryptography**](./task-5-cryptography-and-strategy-pattern): Реализация шифратора бинарных данных с помощью паттерна проектирования Стратегия.
-6.  [**ImageFIFO**](./task-6-multithreading-image-fifo): Многопоточная очередь обмена данными (Producer-Consumer) для обработки кадров.
