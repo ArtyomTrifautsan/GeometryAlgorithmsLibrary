@@ -171,6 +171,7 @@
     <ClInclude Include="Algorithms\PointSegmentDistance3.h" />
     <ClInclude Include="BoundingVolumes\AABB2.h" />
     <ClInclude Include="Math\Constants.h" />
+    <ClInclude Include="Math\Tolerance.h" />
     <ClInclude Include="Primitives\CubicBezierCurve2.h" />
     <ClInclude Include="Primitives\Header.h" />
     <ClInclude Include="Primitives\Line2.h" />
